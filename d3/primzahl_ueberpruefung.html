@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Primzahl-Überprüfung</title>
+  <script>
+  'use strict';
+
+  window.onload = function(){
+    var startWert = 2;
+    var endWert = 100;
+
+    // for(var i = startWert; i <= endWert; i++){
+    //     if( isPrimzahl(i) )
+    //       console.log( i + ' ist eine Primzahl!' );
+    // }
+
+    function isPrimzahl(zahl){
+
+      for(var j = 2; j <= zahl/2; j++){
+        // falls ohne Rest teilbar, keine Primzahl
+        if( zahl % j === 0)
+          return false;
+      }
+
+      // Falls nach dem letzten Schleifendurchlauf noch kein return
+      // erfolgt ist, dann ist's eine Primzahl
+      return true;
+    }
+
+    document.getElementById('btn_eingabe').addEventListener('click', function(){
+      var benutzereingabe = prompt('Geben Sie eine Zahl an');
+
+      benutzereingabe = parseInt(benutzereingabe);
+      // oder so...
+      // benutzereingabe *= 1;
+      // benutzereingabe = benutzereingabe * 1;
+      console.log(benutzereingabe);
+
+      var element = document.getElementById('ausgabe');
+
+      if( isNaN(benutzereingabe) )
+        element.innerText = 'Geben sie bitte eine gültige Zahl an.';
+      else  // benutzereingabe ist ein valider numerischer Wert
+        element.innerText = benutzereingabe + (isPrimzahl(benutzereingabe) ? ' ist eine Primzahl' : ' ist keine Primzahl');
+    });
+
+  } // Ende onload
+  </script>
+</head>
+<body>
+  <p id="ausgabe"></p>
+  <button id="btn_eingabe" type="button" name="button">Zahl testen</button>
+</body>
+</html>

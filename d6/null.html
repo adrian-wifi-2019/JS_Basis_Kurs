@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wert null</title>
+  <script>
+    let x;
+    const y = null;
+
+    if(x == y) // true
+      console.log('y == x');
+
+    if(y === undefined) // false
+      console.log('y === undefined');
+
+    if(typeof y === 'undefined') // false
+      console.log('typeof y === "undefined"');
+
+    if(typeof y === 'object') // true
+      console.log('typeof y === "object"');
+
+    if( !y && !x  ) // true
+      console.log('!y && !x');
+
+  </script>
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Globale und lokale Variablen mit 'var'</title>
+  <script>
+    'use strict';
+
+    var x = 12;
+
+    console.log('x= ' + x);
+
+    function tuWas(){
+      y = 2 * x;
+      var htmlNode = document.getElementById('ausgabe');
+      htmlNode.innerText = '2 mal x ist gleich ' + y;
+    }
+
+  </script>
+</head>
+<body>
+  <p id="ausgabe"></p>
+  <button type="button" name="button" onclick="tuWas();">Zeige X</button>
+</body>
+</html>

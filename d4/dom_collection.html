@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML DOM Collection</title>
+  <style media="screen">
+    .flex_box {
+      display:flex;
+      flex-wrap:wrap;
+    }
+    .flex_box > div {
+      flex-basis: 17%;
+      border: 1px solid black;
+      margin: 1%;
+      padding: 1em;
+      box-sizing: border-box;
+      background-color: lavender;
+    }
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      var elemente = document.querySelectorAll('.flex_box > div');
+      // var flexContainer = document.querySelector('div.flex_box');
+
+      for(var i = 0; i < elemente.length; i++){
+          console.log( elemente[i] + ' hat Index ' + i);
+
+          elemente[i].onclick = function(ereignis){
+            // console.log('this: ' + this);
+            console.dir(ereignis);
+            ereignis.currentTarget.style.color = 'red';
+            ereignis.currentTarget.innerText = 'Klick mich weg!';
+
+            // console.log('ereignis.currentTarget: ' + ereignis.currentTarget);
+            // flexContainer.removeChild(ereignis.currentTarget);
+          }
+      }
+
+    });
+  </script>
+</head>
+<body>
+  <div class="flex_box">
+    <div><p>Klick mich!</p></div>
+    <div>Klick mich!</div>
+    <div>Klick mich!</div>
+    <div>Klick mich!</div>
+    <div>Klick mich!</div>
+    <div>Klick mich!</div>
+    <div>Klick mich!</div>
+    <div>Klick mich!</div>
+    <div>Klick mich!</div>
+    <div>Klick mich!</div>
+    <div>Klick mich!</div>
+    <div>Klick mich!</div>
+    <div>Klick mich!</div>
+  </div>
+</body>
+</html>

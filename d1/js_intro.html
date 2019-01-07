@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    // das Schlüsselwort 'var' deklariert eine Variable
+
+    // Datentyp 'string'
+    var foo = 'Hello';
+    var foo2 = 'world!';
+    // var foo3 = 12;
+
+    if( typeof foo3 === 'undefined' )
+      console.log('foo3 existiert nicht');
+    else if ( foo3 === undefined )
+      console.log('foo3: ' + foo3);
+    else if ( foo3 === 12 )
+      console.log("Ist 12");
+    else if ( foo3 >= 12 )
+      console.log("Ist größer 12");
+    else
+      console.log("Ist kleiner 12")
+
+    // Datentyp 'number'
+    var x = 12;
+    var y = 24;
+
+    var ja_nein = false;
+    var ja_nein_num = 0;
+
+    // == vergleicht auf nur auf Wert, der Datentyp wird gegebenenfalls on-the-fly konvertiert
+    // der Variablenwert/-typ bleibt aber nachträglich unverändert
+    if (ja_nein_num == false) {
+      // alert('negativ!');
+    }
+
+    // === vergleicht auf Datentyp und Wert
+    if (ja_nein_num === false) {
+      // alert('absolut negativ!');
+    }
+
+    if (ja_nein === false) {
+      // alert('wirklich absolut negativ!');
+    }
+
+    console.log(foo2 + x + y + foo);
+
+    // alert( foo + ' ' + foo2 );
+    // alert("Hello world!");
+  </script>
+</head>
+<body>
+  <p id="ausgabe"></p>
+</body>
+</html>

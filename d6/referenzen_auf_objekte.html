@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Kopien von Primitiven Datentypen und Referenzen auf Objekte</title>
+  <script>
+
+  let x = 5;
+  // der übernommene Wert von x ist eine Kopie...
+  let y = x;
+  x = 3;
+  console.log(y);
+
+  let liste = [1, 2, 3];
+  let liste2 = liste;
+
+  liste.push(99);
+  liste[1] = 55;
+  console.log(liste2);
+
+  </script>
+</head>
+<body>
+
+</body>
+</html>

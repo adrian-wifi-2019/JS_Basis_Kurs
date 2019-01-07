@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Memory</title>
+    <link rel="stylesheet" href="css/base.css">
+    <style>
+        .memory {
+          display: grid;
+          grid-template-columns:  1fr 1fr 1fr 1fr;
+          grid-template-rows:     1fr 1fr 1fr 1fr;
+          grid-gap: 1em;
+          padding: 1em;
+          width: 50em;
+          height: 50em;
+          border: 1px solid black;
+          background-color: darkkhaki;
+        }
+        .karte {
+          text-align: center;
+          font-size: xx-large;
+          border: 1px solid black;
+          padding-top: 35%;
+          background-color: olive;
+        }
+        .msg {
+          position: absolute;
+          width:50em;
+          top: 18em;
+          display: none;
+          background-color: orangered;
+          border: 2px solid darkred;
+          color: white;
+          text-align: center;
+          box-sizing: border-box;
+          padding: 1em;
+          margin: 1em;
+        }
+    </style>
+    <script>
+
+      document.addEventListener('DOMContentLoaded', function(){
+          const spalten = 4,
+                reihen = 4,
+                zahlen = [33, 33, 12, 5, 88, 5, 12, 25, 88, 27, 25, 27, 50, 20, 50, 20];
+
+          let karteAufgedeckt = null;
+          let anzahlAufzudecken = spalten * reihen;
+
+          document.getElementById('startgame').onclick = erzeugeSpielfeld;
+
+          const spielRaster = document.createElement('div');
+
+          function erzeugeSpielfeld (){
+            spielRaster.className = 'memory';
+
+            for(let i = 0; i < spalten * reihen; i++){
+              let karte = document.createElement('div');
+              karte.className = 'karte';
+              karte.addEventListener('click', behandleKartenKlick);
+
+              let inhalt = document.createElement('span');
+              inhalt.style.display = 'none';
+              inhalt.textContent = zahlen[i];
+
+              karte.appendChild(inhalt);
+              spielRaster.appendChild(karte);
+            }
+
+            document.getElementById('spiel').appendChild(spielRaster);
+          }
+
+          function behandleKartenKlick(ereignis){
+            const inhaltGeklickt = ereignis.currentTarget.firstElementChild;
+
+            if(inhaltGeklickt.style.display !== 'none')
+              return;
+
+            inhaltGeklickt.style.display = 'block';
+
+            if(karteAufgedeckt === null){
+              karteAufgedeckt = ereignis.currentTarget;
+              return;
+            }
+
+            // die 2. Karte wurde aufgedeckt..
+            const inhaltAufgedeckt = karteAufgedeckt.firstElementChild;
+
+            if(inhaltAufgedeckt.textContent === inhaltGeklickt.textContent){
+              inhaltAufgedeckt.style.color = inhaltGeklickt.style.color = 'darkgreen';
+
+              anzahlAufzudecken -= 2;
+
+              if(anzahlAufzudecken === 0){
+                document.querySelector('div.msg').style.display = 'block';
+                console.log('Geschafft!');
+              }
+            } else { // kein Match...
+              inhaltAufgedeckt.style.color = inhaltGeklickt.style.color = 'firebrick';
+
+              setTimeout( function(inhalt1, inhalt2){
+                inhalt1.style.color   = inhalt2.style.color   = 'black';
+                inhalt1.style.display = inhalt2.style.display = 'none';
+              }, 1000, inhaltGeklickt, inhaltAufgedeckt);
+            }
+
+            karteAufgedeckt = null;
+          }
+      });
+
+    </script>
+</head>
+<body>
+
+<h1>Zahlen Memory</h1>
+
+<div id="spiel"></div>
+<div class="msg">Geschafft!</div>
+<button id="startgame" type="button" name="button">Neues Spiel</button>
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    var foo = 'Hello';
+    var foo2 = 'world!';
+
+    window.addEventListener('load', fertigGeladen);
+
+    function fertigGeladen(){
+      document.getElementById('ausgabe').innerHTML = foo + foo2;
+    }
+  </script>
+</head>
+<body>
+  <p id="ausgabe"></p>
+
+  <!-- <script>
+    // das script wird erst nach Einlesen des <p>-Elements ausgeführt
+    var foo = 'Hello';
+    var foo2 = 'world!';
+    document.getElementById('ausgabe').innerHTML = foo + foo2;
+  </script> -->
+
+</body>
+</html>

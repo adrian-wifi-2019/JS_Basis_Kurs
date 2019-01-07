@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zähler mit Closure</title>
+  <script>
+    'use strict';
+
+    window.onload = function(){
+      var zaehler = 0;
+
+      document.querySelector('body > button').onclick = function(){
+        zaehler ++;
+        console.log('Dieser Button wurde ' + zaehler + ' mal geklickt');
+      }
+    }
+
+    var foo;
+
+    function parentFoo(){
+      var zaehler = 0;
+      console.log('parentfoo: wurde aufgerufen');
+
+      //foo(); // Reference Error, da eine function expression
+      foo2(); // kann aufgerufen werden, da eine Funktions-Deklaration
+
+      // da foo eine globale(!) Variable ist, bleibt eine Referenz auf diese function auch nach Funktionsdurchlauf bestehen
+      // und es entsteht dadurch eine Closure
+      foo = function(){
+        zaehler++;
+        console.log('foo: zaehler ist ' + zaehler);
+      }
+
+      function foo2(){
+        console.log('foo2: zaehler ist ' + zaehler);
+      }
+    }
+
+    parentFoo();
+
+    foo();
+    foo();
+    foo();
+
+  </script>
+</head>
+<body>
+  <button type="button" name="button">Klick mich!</button>
+</body>
+</html>

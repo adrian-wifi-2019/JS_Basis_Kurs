@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Bubbling</title>
+  <style media="screen">
+    div,p,span {
+      border: 1px solid;
+      padding: 1em;
+    }
+  </style>
+  <script>
+    'use strict';
+    window.onload = function(){
+        function geklickt(ereignis){
+            console.log("Geklickt, ausgelöst durch: " + ereignis.currentTarget);
+        }
+
+        document.getElementById('main').onclick = geklickt;
+        document.getElementById('child').onclick = geklickt;
+        document.getElementById('grandchild').onclick = geklickt;
+    }
+  </script>
+</head>
+<body>
+  <h3>Event Bubbling</h3>
+  
+  <div id="main">
+    <p id="child">
+      <span id="grandchild">Grandchild</span>
+    </p>
+  </div>
+
+</body>
+</html>

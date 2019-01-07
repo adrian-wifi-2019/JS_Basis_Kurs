@@ -1,0 +1,5 @@
+- Start- und Endwert festlegen
+- überprüfe alle Zahlen von Start- bis Endwert (ob sie durch eine andere Zahl, als sich selbst oder 1 teilbar sind)
+auf alle Zahlen kleiner der überprüften Zahl und größer 1 (der Halbwert reicht auch), ob teilbar
+  - wenn ja -> keine Primzahl -> Abbruch der Übprüfung und weiter mit der nächsten Zahl
+  - wenn nach Überprüfung aller Zahlen -> nein -> Primzahl -> Ausgabe in fenster

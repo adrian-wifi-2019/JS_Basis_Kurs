@@ -1,0 +1,18 @@
+body {
+  font-family: sans-serif;
+}
+
+div {
+  padding: 1em;
+  border: 1px solid;
+  overflow: auto;
+}
+
+img {
+  float: right;
+}
+
+button {
+  clear:both;
+  margin: 1em;
+}

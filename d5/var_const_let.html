@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <script>
+      'use strict';
+      // typeof foo;	// ReferenceError: can't access lexical declaration `bar' 		// before initialization
+      // let foo = 55;
+
+      let x;
+      //vorab deklarierte 'let' x (wie eine vorab deklarierte 'var')
+      if(typeof x === 'undefined')  // true
+      if(x === undefined)  // true
+
+      //gehoistete 'var' y (deklariert, aber nicht initialisiert)
+      if(typeof y === 'undefined') // true
+      if(y === undefined)  // true
+      var y = 2;
+
+      //nicht deklarierter Bezeichner z
+      if(typeof z === 'undefined')  // true
+      // if(z === undefined)  // ReferenceError: z is not defined
+
+      // jeder {}-block bildet einen eigenen Gültigkeitsbereich für let- und const-Variablen
+      if(y == 2){
+        let y = 50;
+        console.log('y in if-block: ' + y);
+      }
+
+      {
+        let y = 33;
+        console.log('y in standalone-block: ' + y);
+      }
+
+      console.log('y global: ' + y);
+  </script>
+</head>
+<body>
+
+</body>
+</html>

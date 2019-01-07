@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>window.onload vs. DOMContentLoaded</title>
+  <script>
+    window.onload = function(){
+      console.log('onload aufgerufen');
+      console.log('onload: ' + document.querySelector('body>img').width );
+    }
+
+    document.addEventListener('DOMContentLoaded', function(){
+      console.log('DOMContentLoaded aufgerufen');
+      console.log('DOMContentLoaded: ' + document.querySelector('body>img').width );
+    });
+  </script>
+</head>
+<body>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Gro%C3%9Fes_Walsertal_Panorama_2.jpg" alt="">
+</body>
+</html>

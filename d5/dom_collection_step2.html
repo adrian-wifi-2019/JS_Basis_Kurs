@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML DOM Collection</title>
+  <style media="screen">
+    .flex_box {
+      display:flex;
+      flex-wrap:wrap;
+    }
+    .flex_box > div {
+      flex-basis: 17%;
+      border: 1px solid black;
+      margin: 1%;
+      padding: 1em;
+      box-sizing: border-box;
+      background-color: lavender;
+    }
+    .ansichtGeklickt {
+      color: red;
+    }
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      var elemente = document.querySelectorAll('.flex_box > div');
+
+      for(var i = 0; i < elemente.length; i++){
+          elemente[i].addEventListener('click', ersterKlick);
+      }
+
+      function ersterKlick(ereignis){
+        var elem = ereignis.currentTarget;
+
+        elem.className = 'ansichtGeklickt';
+        elem.innerText = 'Klick mich weg!';
+        console.log('Initiale Listener-Funktion auf Klick wurde aufgerufen.');
+
+        elem.addEventListener('click', zweiterKlick);
+        elem.removeEventListener('click', ersterKlick);
+      }
+
+      function zweiterKlick(ereignis){
+        console.log('Zweite Listener-Funktion auf Klick wurde aufgerufen.');
+        ereignis.currentTarget.style.display = 'none';
+      }
+
+    });
+
+  </script>
+</head>
+<body>
+  <div class="flex_box">
+    <div>Klick mich!</div>
+    <div>Klick mich!</div>
+    <div>Klick mich!</div>
+    <div>Klick mich!</div>
+    <div>Klick mich!</div>
+    <div>Klick mich!</div>
+    <div>Klick mich!</div>
+    <div>Klick mich!</div>
+    <div>Klick mich!</div>
+    <div>Klick mich!</div>
+    <div>Klick mich!</div>
+    <div>Klick mich!</div>
+    <div>Klick mich!</div>
+  </div>
+</body>
+</html>
