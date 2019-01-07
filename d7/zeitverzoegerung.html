@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style media="screen">
+    .box{
+      background-color: darkred;
+      width: 100px;
+      height: 20px;
+      position: absolute;
+    }
+  </style>
+
+  <script>
+
+    window.onload = function(){
+      const box = document.querySelector('body > div.box');
+      let pos_left = 0;
+      const pixelPerSec = 50;
+
+      // let datum = new Date();
+      // let startZeit = datum.getTime();
+      //console.log(startZeit.toLocaleDateString());
+
+      let startZeit = Date.now();
+      console.log(startZeit);
+
+      //requestAnimationFrame(bewegeBox);
+      bewegeBox();
+
+      function bewegeBox(){
+        let jetzt = Date.now();
+        let secVergangen = (jetzt - startZeit)/1000;
+        startZeit = jetzt;
+
+        pos_left += pixelPerSec * secVergangen;
+
+        box.style.left = pos_left + 'px';
+        //console.log("neue Pos: " + box.style.left);
+        requestAnimationFrame(bewegeBox);
+      }
+
+      const ausgabe = document.querySelector('body > div.timer');
+      const startZeitAbsolut = startZeit;
+
+      //window.setInterval()
+      setInterval(updateTimer, 1000);
+
+      function updateTimer(){
+        let jetzt = Date.now();
+        let secVergangen = (jetzt - startZeitAbsolut)/1000;
+        ausgabe.textContent = Math.floor(secVergangen) + ' Sekunden';
+      }
+
+    }
+
+  </script>
+</head>
+<body>
+  <div class="box"></div>
+
+  <div class="timer"></div>
+</body>
+</html>

@@ -1,0 +1,6 @@
+Bei 'Neuem Spiel':
+
+- lösche Karten, falls vorhanden
+- lösche Zahlenliste
+- erzeuge neue Zahlenliste
+- erzeuge neue Karten -> erzeugeSpielfeld()
