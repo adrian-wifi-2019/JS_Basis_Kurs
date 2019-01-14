@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Keyboard-Events</title>
+  <script>
+    /*
+    Keyboard-Events in der Reihenfolge ihres Aufrufs:
+    1. keydown: wird bei allen Tasten aufgerufen
+    2. keypress: wird im Regelfall nur bei druckbaren Zeichen aufgerufen
+    3. keyup: wird bei allen Tasten aufgerufen
+    */
+
+    document.onkeydown = keyEreignis;   // keyCode wird gesetzt, charCode ist 0
+    document.onkeypress = keyEreignis;  // charCode wird gesetzt, keyCode ist 0 / null
+    document.onkeyup = keyEreignis;     // keyCode wird gesetzt, charCode ist 0
+
+    function keyEreignis(e){
+      //console.dir(e);
+      // console.log('Key-Event: ' + e.type + ', keyCode: ' + e.keyCode + ', charCode: ' + e.charCode);
+      // console.log('which Eigenschaft: ' + e.which);
+
+      console.log('Ereignis: ' + e.type);
+
+      if(e.charCode /* === 0 || e.charCode === null */)
+        console.log('Zeichen via charCode ist ' + String.fromCharCode(e.charCode) );
+
+      if(e.type === 'keypress') // nur keypress Ereignisse liefern den Unicode Character Code!
+        console.log('Zeichen via which (Character Code) ist ' + String.fromCharCode(e.which) );
+      else /* if (e.type === 'keydown' || e.type === 'keyup') */
+        console.log('Die Taste hatte den Tasten Code ' + e.which);
+
+      if(e.altKey /* === true */)
+        console.log('Alt-Taste ist (zusätzlich) gedrückt');
+
+      if(e.shiftKey /* === true */)
+        console.log('Shift-Taste ist (zusätzlich) gedrückt');
+
+      if(e.ctrlKey /* === true */)
+        console.log('Control-Taste ist (zusätzlich) gedrückt');
+
+    }
+
+  </script>
+</head>
+<body>
+
+</body>
+</html>

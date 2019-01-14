@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+<head>
+	<title>Javascript Basics</title>
+	<meta charset="utf-8">
+	<script>
+
+var _e = function( id ) {
+	return document.getElementById( id );
+}
+
+var setClass = function( id, name ) {
+	if ( typeof id == 'string' ) { id = [id]; }
+	for ( let i = 0; i< id.length; i++ ) {
+		_e( id[i] ).className = name;
+	}
+}
+
+window.onload=function() {
+
+		/*
+		*		SUBMIT Form
+		*
+		*/
+
+		_e( 'btn_submit' ).onclick = function( e ) {
+			e.preventDefault();
+			setClass( ['label_datenschutz','label_anrede_1','label_anrede_2', 'f_vorname', 'f_nachname', 'f_email' ],'');
+
+			if ( !_e( 'f_datenschutz' ).checked ) {
+				setClass( 'label_datenschutz','error');
+			}
+
+			var radbtns = document.querySelectorAll( '[name=rb_anrede]' );
+			var anrede = false;
+			for ( let i=0; i<radbtns.length; i++ ) {
+					if ( radbtns[i].checked ) {
+						anrede = true;
+						break;
+					}
+			}
+			if ( !anrede ) {
+					setClass( ['label_anrede_1','label_anrede_2'],'error');
+			}
+
+			if ( _e('f_vorname').value.length < 2 ) {
+				setClass( 'f_vorname', 'error' );
+			}
+
+			if ( _e('f_nachname').value.length < 2 ) {
+				setClass( 'f_nachname', 'error' );
+			}
+
+			if ( _e('f_email').value.length < 7 || _e('f_email').value.split('@').length != 2) {
+				setClass( 'f_email', 'error' );
+			}
+		}
+
+		/*
+		*		FOCUS/BLUR beim E-Mail Feld
+		*
+		*/
+		_e( 'f_email' ).onfocus = function() {
+			if ( this.value == 'Deine E-Mail' ) {
+				this.value = '';
+			}
+		}
+
+		_e( 'f_email' ).onblur = function() {
+			if ( this.value == '' ) {
+				this.value = 'Deine E-Mail';
+			}
+		}
+
+
+
+		/*
+		*		KEYEVENT Namen Feld
+		*
+		*/
+		var nonumberInput = function(e) {
+			if( e.keyCode >=48 && e.keyCode <= 57 ) {
+				e.preventDefault();
+			}
+		}
+		_e('f_nachname').onkeydown = nonumberInput;
+		_e('f_vorname').onkeydown = nonumberInput;
+
+}
+	</script>
+	<style>
+	body, input, select, button { font:20px Arial; }
+	label { width:150px; display:inline-block; }
+	.check label, .radios label { width:auto; }
+	.radios { padding-left:160px; }
+	div { border:solid #ccc; border-width:1px 0; padding:10px; }
+	button { width:200px; line-height:2; margin:20px;}
+	.error { border:1px solid red; }
+	.check .error, .radios .error { border:none; color:red; }
+	</style>
+</head>
+<body>
+	<h1>Newsletter Anmeldung</h1>
+	<form action="?">
+		<div><label>E-Mail</label><input type="text" id="f_email" value="Deine E-Mail"></div>
+		<div class="radios">
+			<label id="label_anrede_1">Herr <input type="radio" name="rb_anrede" id="f_anrede_h" value="herr"></label>
+			<label id="label_anrede_2">Frau <input type="radio" name="rb_anrede" id="f_anrede_f" value="frau"></label>
+		</div>
+		<div><label for="f_vorname">Vorname</label><input type="text" id="f_vorname"></div>
+		<div><label>Nachname</label><input type="text" id="f_nachname"></div>
+	  <div>
+				<label>Geburtsdatum</label>
+				<select id="f_geb_tag"><option>Tag</option></select>
+				<select id="f_geb_monat"><option>Monat</option></select>
+				<select id="f_geb_jahr"><option>Jahr</option></select>
+		</div>
+		<div class="check"><label id="label_datenschutz"><input type="checkbox" id="f_datenschutz" value="1"> Datenschutz akzeptiert.</label></div>
+
+
+		<button id="btn_submit">Anmelden</button>
+	</form>
+</body>
+</html>

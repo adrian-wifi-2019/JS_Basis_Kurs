@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Objekte in Literal-Schreibweise</title>
+  <script>
+      document.addEventListener('DOMContentLoaded', function(){
+        //const obj = new Object();
+        const obj = {
+          vorname: 'Rudi',
+          nachname: 'Ratlos',
+          adresse: 'Lange Gasse 24',
+          logMich: loggeEigenschaften
+        };
+
+        const obj2 = {
+          vorname: 'Susi',
+          nachname: 'Muster',
+          adresse: 'Kurzen Gasse 1',
+          logMich: loggeEigenschaften
+        };
+
+        obj.logMich();
+        obj2.logMich();
+        loggeEigenschaften();
+
+        function loggeEigenschaften(){
+          // console.dir( this );
+          console.log('Vorname: ' + this.vorname);
+          console.log('Nachname: ' + this.nachname);
+          console.log('Adresse: ' + this.adresse);
+        }
+
+        const ausgabeElement = document.getElementById('ausgabe');
+
+        // zeigeEigenschaften(); // JS Erros, da die Variable noch nicht initialisiert wurde
+
+        // if(true) {
+          const zeigeEigenschaften = function(meinObj){
+            for(let i in meinObj){
+              ausgabeElement.innerHTML += i + ": " + meinObj[i] + '<br>';
+            }
+          };
+        // }
+
+        zeigeEigenschaften(obj);
+
+        // console.log( obj.nachname );
+        // console.log( obj['nachname'] );
+
+      });
+  </script>
+</head>
+<body>
+
+<div id="ausgabe">
+
+</div>
+
+</body>
+</html>

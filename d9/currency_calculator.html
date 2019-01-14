@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Währungsrechner</title>
+
+  <script>
+
+    document.addEventListener('DOMContentLoaded', function(){
+
+      const waehrungen = [];
+      waehrungen.push( { name: 'US Dollar',   kurs: 1.15, symbol: '$' } );
+      waehrungen.push( { name: 'Yen',         kurs: 124.09, symbol: '¥' } );
+      waehrungen.push( { name: 'Brit. Pfund', kurs: 0.89, symbol: '£' } );
+
+      const select = document.querySelector('#auswahl_waehrung > select');
+
+      for(let i=0; i < waehrungen.length; i++){
+        select.innerHTML += '<option value="' + i + '">' + waehrungen[i].name + '</option>';
+      }
+
+      select.onchange = function(){
+        let anzahlEUR = document.getElementById('eingabe_eur').value;
+        document.getElementById('ausgabe').innerText = waehrungen[select.value].kurs * anzahlEUR;
+      }
+    });
+
+  </script>
+</head>
+<body>
+  <div>
+    EURO: <input id="eingabe_eur" type="text" name="summe_eur" value="1">
+  </div>
+
+  <div id="auswahl_waehrung">
+    <select class="" name="">
+      <option>Wählen Sie eine Währung</option>
+    </select>
+  </div>
+
+  <div>
+    1 € = <span id="ausgabe"></span>
+  </div>
+
+</body>
+</html>

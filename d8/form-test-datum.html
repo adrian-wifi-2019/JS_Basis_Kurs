@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+	<title>Javascript Basics</title>
+	<meta charset="utf-8">
+	<script>
+window.onload = function() {
+		document.getElementById( 'meinForm' ).onsubmit = function( event ) {
+			event.preventDefault(); // verhindert das Standard-Ereignis
+			var eingabe = document.getElementById( 'feldDatum' ).value;
+			var teile = eingabe.split( '.' );
+
+			console.log( teile );
+
+			if ( teile.length != 3 ) {
+				document.getElementById( 'feldDatum' ).className = 'error';
+			} else {
+				// teile[0] => TAG
+				// teile[1] => MONAT
+				// teile[2]	=> JAHR
+
+				var datum = new Date( teile[2], teile[1]-1, teile[0] );
+
+				if ( teile[2] == datum.getFullYear() &&
+					teile[1]-1 == datum.getMonth() &&
+					teile[0] == datum.getDate()
+			  ) {
+					document.getElementById( 'feldDatum' ).className = '';
+				} else {
+					document.getElementById( 'feldDatum' ).className = 'error';
+				}
+
+
+			}
+
+
+		}
+}
+	</script>
+	<style>
+	body, input, button { font:20px Arial; }
+	.error { background:red; }
+	</style>
+</head>
+<body>
+	<h1>Formular</h1>
+	<form action="?" method="post" id="meinForm">
+		<label for="feldDatum">Datum:</label> <input type="text" name="datum" id="feldDatum" placeholder="TT.MM.JJJJ"><br>
+		<input type="date">
+		<button>Senden</button>
+	</form>
+
+
+</body>
+</html>

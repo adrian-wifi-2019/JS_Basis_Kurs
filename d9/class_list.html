@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>classList-Eigenschaft, Backslashes und noscript-Bereiche</title>
+  <style>
+    .eingabe {
+      border: 2px solid red;
+      background: lightblue;
+    }
+    .fokus {
+      background: yellow;
+    }
+  </style>
+
+  <script>
+    window.onload = function(){
+      let inputs = document.getElementsByTagName('input');
+
+      for(let i = 0; i < inputs.length; i++){
+
+        inputs[i].onfocus = function(e){
+          let input = e.currentTarget;
+          // console.log('classList-Eigenschaft des Input Elements:');
+          // console.dir(input.classList);
+          input.classList.add('fokus');
+        }
+
+        inputs[i].onblur = function(e){
+          let input = e.currentTarget;
+          // console.log('Das Input hat die Klasse \'fokus\' zugewiesen: ' + input.classList.contains('fokus'));
+          input.classList.remove('fokus');
+          // console.log('Das Input hat die Klasse \'fokus\' zugewiesen: ' + input.classList.contains('fokus'));
+        }
+
+        const textMehrzeiligeAusgabe = 'Zeile 1\nZeile 2\nZeile 3';
+        const textMehrzeiligeEingabe = 'Zeile 1\
+        Zeile 2\
+        Zeile 3';
+
+        document.getElementById('ausgabe').innerText = textMehrzeiligeAusgabe;
+        // document.getElementById('ausgabe').innerText = textMehrzeiligeEingabe;
+      }
+
+    }
+  </script>
+
+</head>
+<body>
+    <input type="text" name="nummer1" value="Feld 1" class="eingabe">
+    <input type="text" name="nummer2" value="Feld 2" class="eingabe">
+
+    <p id="ausgabe"></p>
+
+    <noscript>
+      <p>
+        noscript-Bereiche werden nur dann angezeigt, wenn JavaScript deaktviert ist.
+        In HTML5 kann ein HTML-Dokument auch mehrere noscript-Bereiche haben.
+        Hier sollte ein Hinweis stehen, dass JS zu aktivieren ist...
+      </p>
+    </noscript>
+</body>
+</html>

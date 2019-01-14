@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+	<title>Javascript Basics</title>
+	<meta charset="utf-8">
+	<script>
+window.onload = function() {
+
+		document.getElementById( 'meinForm' ).onsubmit = function( event ) {
+			event.preventDefault(); // verhindert das Standard-Ereignis
+
+			var eingabe;
+			eingabe = document.getElementById( 'feldZahl' ).value;
+			eingabe = eingabe.replace( ',', '.' );
+			eingabe *= 1;
+			// parseFloat
+			//eingabe = parseFloat( eingabe );
+
+			/*
+			"5" => 5
+			"a" => NaN
+			"5m5" => NaN
+			"5.1" => 5.1
+			"5,1" => NaN
+			"" => 0
+			*/
+			//if ( eingabe > 0 || eingabe <= 0 ) {
+
+			if ( isFinite( eingabe) ) {
+				document.getElementById( 'feldZahl' ).className = '';
+
+			} else {
+				document.getElementById( 'feldZahl' ).className = 'error';
+			}
+
+		}
+
+
+
+}
+	</script>
+	<style>
+	body, input, button { font:20px Arial; }
+	.error { background:red; }
+	</style>
+</head>
+<body>
+	<h1>Formular</h1>
+	<form action="?" method="post" id="meinForm">
+		<label for="feldZahl">Zahl:</label> <input type="text" name="zahl" id="feldZahl" placeholder="Geben Sie eine Zahl ein"><br>
+		<button>Senden</button>
+	</form>
+
+
+</body>
+</html>
