@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Dia-Schau</title>
+
+    <style>
+        #diaschau {
+            position: relative;
+            width: 700px;
+            height: 500px;
+        }
+        .bilder {
+            position: absolute;
+            display: none;          /* Am Beginn nicht anzeigen */
+            left: 0;
+            top: 0;
+        }
+        #diaschau .next {           /* Bereich für nächstes Bild */
+            width: 200px;
+            height: 500px;
+            position: absolute;
+            cursor: pointer;
+            right: 0;
+        }
+        #diaschau .prev{            /* Bereich für vorheriges Bild */
+            width: 200px;
+            height: 500px;
+            position: absolute;
+            cursor: pointer;
+            left: 0;
+        }
+    </style>
+
+    <script src="jquery-3.3.1.min.js"></script>
+    <script>
+      $( function(){
+        let intervalId = setInterval( diaSchau, 3000, true );
+
+        $('.bilder:first').css('display', 'block').addClass('aktivesBild');
+
+        // .on definiert einen EventListener
+        // $('.diaschau > .next').on('click', function(){});
+        // die meisten Events lassen sich aber auch via Handler zuweisen...
+        $('.next').click(function(){
+          clearInterval(intervalId);
+          diaSchau(true);
+        });
+
+        $('.prev').click(function(){
+          clearInterval(intervalId);
+          diaSchau(false);
+        });
+
+        function diaSchau(vorwaerts){
+          const bildAktiv = $('.aktivesBild');
+          let bildNext;
+
+          if(vorwaerts)
+            bildNext = bildAktiv.next('img').length ? bildAktiv.next('img') : $('.bilder:first');
+          else
+            bildNext = bildAktiv.prev('img').length ? bildAktiv.prev('img') : $('.bilder:last');
+
+          bildAktiv.fadeOut(1000);
+          bildNext.fadeIn(1000);
+
+          //console.dir(bildNext);
+          bildAktiv.removeClass('aktivesBild');
+          bildNext.addClass('aktivesBild');
+        }
+
+      } );
+    </script>
+
+</head>
+<body>
+
+<noscript>
+    <p>Kein JavaScript ...</p>
+</noscript>
+
+<h3>Dia-Schau</h3>
+
+<div id="diaschau">
+    <img src="Foto1.jpg" alt="Foto1" class="bilder">
+    <img src="Foto2.jpg" alt="Foto2" class="bilder">
+    <img src="Foto3.jpg" alt="Foto3" class="bilder">
+    <img src="Foto4.jpg" alt="Foto4" class="bilder">
+    <img src="Foto5.jpg" alt="Foto5" class="bilder">
+    <div class="next"></div>
+    <div class="prev"></div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script>
+    // jQuery();
+    // $(); // $ ist ein Alias für das jQuery Core Objekt
+
+    // entspricht document.addEventListener('DOMContentLoaded', ...)
+    // $( document ).ready( function() {
+    //   alert('ready');
+    // });
+
+    // verknappte Festlegung einer ready()-Funktion
+    $( function(){
+      // alert('ready 2');
+
+      // Zugriff via id und Änderung des Textinhalts (entspricht der textContent-Eigenschaft)
+      $('#div1').text('Hello world!');
+      $('#div2').html('<strong>Hello again!</strong>') //entspricht der innerHTML-Eigenschaft
+
+      // Änderung von CSS-Attributen (analog zur style-Eigenschaft)
+      $('#div1').css('backgroundColor', 'red');
+      $('#div2').css( {'color':'green', 'backgroundColor':'#99aacc', 'height': '50px'} );
+
+      $('div > p > span').text('Diese Elemente lassen sich durch den Selektor \'div > p > span\' ansprechen.');
+
+      // jQuery-Objekte != JS DOM Elementen
+      // das DOM Element wird jedoch innerhalb des jQuery-Objekts referiert
+      console.dir( $('#div1') );
+      // Zugriff auf das JS DOM Element über das jQuery-Objekt:
+      console.dir( $('#div1')[0] );
+
+      // DOM Manipulationen
+      $('#loeschen > p').remove();
+      $('#loeschen').append('<p>Ich bin ein neues Kind</p>');
+
+      // Erzeugen eines neuen DOM Elements via jQuery-Core Funktion
+      // die appendTo-Methode wird auf das einzubindende Objekt angewandt,
+      // das neue parent-Element wird als Argument mitgeliefert
+      $('<p>Ich bin gleichfalls ein neues DOM-Element</p>').css('color', 'blue').appendTo('#loeschen');
+
+      // die prepend-Methode fügt ein neues Kindelement am Anfang des DOM Elements ein
+      $('#loeschen').prepend('<p>Die letzten werden die ersten sein...</p>');
+
+      // ein argument frägt ein Attribut eines DOM Elements ab
+      console.log('Das href-Attribut des Links lautet: ' + $('#link_id > a').attr('href') );
+
+      $('#link_id > a').attr('href', 'http://wifiwien.at').text('WIFI Wien');
+      // die before-Methode entspricht der JS Methode insertBefore()
+      $('#link_id').before('<p>Hier kommt ein neuer Link...</p>').css('backgroundColor', 'lightblue');
+      $('#link_id').after('<p>Und das war\'s dann...</p>');
+    } );
+
+  </script>
+  <title>jQuery DOM</title>
+</head>
+<body>
+  <div id="div1"></div>
+  <div id="div2"></div>
+
+  <div><p><span></span></p></div>
+  <div><p><span></span></p></div>
+  <div><p><span></span></p></div>
+
+  <div id="loeschen">
+    <p>Lösch mich!</p>
+    <p>Lösch mich!</p>
+  </div>
+
+  <div id="link_id">
+    <a href="#"></a>
+  </div>
+
+</body>
+</html>

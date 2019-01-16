@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Objekte in Literal-Schreibweise</title>
   <script>
+    'use strict';
+
       document.addEventListener('DOMContentLoaded', function(){
         //const obj = new Object();
         const obj = {
@@ -23,10 +25,10 @@
 
         obj.logMich();
         obj2.logMich();
-        loggeEigenschaften();
+        //loggeEigenschaften();
 
         function loggeEigenschaften(){
-          // console.dir( this );
+          console.dir( this );
           console.log('Vorname: ' + this.vorname);
           console.log('Nachname: ' + this.nachname);
           console.log('Adresse: ' + this.adresse);

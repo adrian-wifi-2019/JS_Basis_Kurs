@@ -22,9 +22,15 @@
 
       select.onchange = function(){
         let anzahlEUR = document.getElementById('eingabe_eur').value;
-        document.getElementById('ausgabe').innerText = waehrungen[select.value].kurs * anzahlEUR;
+        let cur = waehrungen[select.value];
+        document.getElementById('ausgabe').innerText = (cur.kurs * anzahlEUR).toFixed(2) + ' ' + cur.symbol;
       }
     });
+
+    // var str = new String("bla");
+    // var str2 = "bla";
+    // console.log('str === str2: ' + str === str2);
+    // console.log( "    Blabla   ".trim() );
 
   </script>
 </head>
