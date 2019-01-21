@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Regular Expressions - Basics</title>
+  <script>
+      window.onload = function () {
+
+        // beim Erzeuegen via Konstruktor-Funktion werden das Suchmuster
+        // und der Modifikator (optional) als Argumente übergeben
+        // const regExp1 = new RegExp('he','gi');
+
+        // Das Regular Expression Literal ist kein Kein String und wird daher OHNE Hochkommas festgelegt
+        // Struktur: /muster/modifikator
+        // Modifikatoren: i=case insensitive, g=global, m=multiline
+        const regExp1 = /he/gi;
+
+        let str = "Hello world, hello Vienna, hello everybody! Is there anyone?";
+        //str = str.replace('he', '!'); // nur das erste Vorkommnis wird bei einem String-Argument ersetzt
+        console.log('step1: ' + str.replace(regExp1, '!') );
+
+
+        // Quantifiers
+        // + legt fest, dass das vorhergehende Zeichen ein oder mehrere Male im Suchmuster vorkommen muss
+        // * legt fest, dass das vorhergehende Zeichen beliebig oft vorkommen darf, aber nicht muss
+        // console.log( str.replace(/hel+/gi, '?') );
+        console.log( str.replace(/hel*/gi, '?') );
+
+
+        document.getElementById('button').onclick = function(){
+
+        }
+      }
+  </script>
+</head>
+<body>
+  <label for="eingabe">Testausdruck:</label>
+  <input type="text" id="eingabe" name="eingabe" value="">
+  <button type="button" id="button">Überprüfen</button>
+</body>
+</html>

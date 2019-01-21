@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Taschenrechner</title>
+  <style media="screen">
+    td {
+      border: 1px solid black;
+      width: 50px;
+      height: 50px;
+      text-align: center;
+      font-size: 2em;
+      cursor: pointer;
+    }
+
+    td:hover {
+      background: #ccc;
+    }
+
+    input {
+      padding: 5px;
+      text-align: right;
+      width: 220px;
+      font-weight: bold;
+      margin-top: 10px;
+      font-size: 2em;
+    }
+  </style>
+  <script>
+    'use strict';
+
+    window.onload = function(){
+      console.log(this);
+
+      const keys = [
+              'MS', 'MR', 'C', '/',
+              '7', '8', '9', '*',
+              '4', '5', '6', '-',
+              '1', '2', '3', '+',
+              '', '0', ',', '='
+      ];
+      const spalten = 4;
+      const eingabe = document.getElementById('eingabe');
+      let tabelle, reihe, zelle, memory;
+
+      tabelle = document.createElement('table');
+      keys.forEach(bildTasten);
+      document.getElementById('tasten').appendChild(tabelle);
+
+      function bildTasten(wert, index/*, array*/){
+        if(index % spalten === 0){
+          reihe = document.createElement('tr');
+          tabelle.appendChild(reihe);
+        }
+
+        zelle = document.createElement('td');
+        zelle.innerText = wert;
+        zelle.onclick = clickTaste;
+        reihe.appendChild(zelle);
+      }
+
+      function clickTaste(e){
+        let wert = eingabe.value;
+
+        switch(this.innerText){
+          case 'C':
+            wert = '';
+            break;
+          case 'MS':
+            memory = errechneEingabe(wert);
+            wert = '';
+            break;
+          case 'MR':
+            wert = memory;
+            break;
+          case '=':
+            wert = errechneEingabe(wert);
+            break;
+          default:
+            wert += this.innerText;
+        }
+
+        eingabe.value = wert;
+      }
+
+      function errechneEingabe(strBerechnung){
+        // Falls der Suchbegriff als String festgelegt ist,
+        // wird durch die replace()-Methode IMMER nur das erte Vorkommnis des Such-Strings ersetzt!
+        // let str = strBerechnung.replace(',', '.');
+
+        let str = strBerechnung.replace(/,/g, '.');
+
+        try{
+          console.log(str);
+          return eval(str).toString().replace('.', ',');
+        } catch(err) {
+          alert('Eingabefehler!');
+          return strBerechnung;
+        }
+      }
+    }
+
+  </script>
+</head>
+<body>
+<div id="tasten"></div>
+<input type="text" id="eingabe" readonly>
+</body>
+</html>

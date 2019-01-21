@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Is eval evil?</title>
+  <script>
+    'use strict';
+
+    window.onload = function(){
+      // const sourceCode = 'alert("Die Funktion eval() erzeugt aus einem String JS Code und führt diesen aus.")';
+
+      // const nachricht = 'Die Funktion eval() erzeugt aus einem String JS Code und führt diesen aus.';
+      // const sourceCode = 'alert("' + nachricht + '")';
+
+      // eval(sourceCode);
+
+      document.getElementsByName('button')[0].onclick = function(){
+        // console.log("click");
+        console.log('Eingabe: ' + document.getElementsByName('eingabe')[0].value);
+
+        try {
+          eval( document.getElementsByName('eingabe')[0].value );
+        } catch( fehler ){
+          alert('Eingabefehler: ' + fehler.name + '\n' + fehler.message);
+        } // finally {
+        //     console.log('Die Funktion wurde bis zum Ende ausgeführt.');
+        // }
+
+        // Nach einem abgefangenen Fehler wird die Funktion weiter ausgeführt
+        // Eine Festlegung weiterer Anweisungen innerhalb eines 'finally'-Blocks
+        // ist somit nicht zwingend notwendig
+         
+        console.log('Die Funktion wurde bis zum Ende ausgeführt.');
+      }
+
+    }
+  </script>
+</head>
+<body>
+  <input type="text" name="eingabe" value="">
+  <button type="button" name="button">Ausführen</button>
+</body>
+</html>
