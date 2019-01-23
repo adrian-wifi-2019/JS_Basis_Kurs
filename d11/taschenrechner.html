@@ -43,6 +43,7 @@
       const spalten = 4;
       const eingabe = document.getElementById('eingabe');
       let tabelle, reihe, zelle, memory;
+      let istBerechneterWert = false;
 
       tabelle = document.createElement('table');
       keys.forEach(bildTasten);
@@ -61,6 +62,11 @@
       }
 
       function clickTaste(e){
+        if(istBerechneterWert){
+          eingabe.value = '';
+          istBerechneterWert = false;
+        }
+
         let wert = eingabe.value;
 
         switch(this.innerText){
@@ -72,7 +78,7 @@
             wert = '';
             break;
           case 'MR':
-            wert = memory;
+            wert += memory;
             break;
           case '=':
             wert = errechneEingabe(wert);
@@ -85,14 +91,26 @@
       }
 
       function errechneEingabe(strBerechnung){
+        istBerechneterWert = true;
         // Falls der Suchbegriff als String festgelegt ist,
         // wird durch die replace()-Methode IMMER nur das erte Vorkommnis des Such-Strings ersetzt!
         // let str = strBerechnung.replace(',', '.');
 
         let str = strBerechnung.replace(/,/g, '.');
+        // nicht ertlaubte Zeichen werden entfernt
+        // str = str.replace(/[^0-9 +\-*/]/g, '');
 
-        try{
-          console.log(str);
+        // der String wird auf ein Muster hin geprüft:
+        // am Anfang eine Zahl
+        // dann beliebig viele erlaubte Zeichen
+        // am Ende wieder eine Zahl
+
+        if(/[0-9][0-9 +\-*/]*[0-9]/.test(str) === false){
+          alert ('Keine gültige Berechnung.')
+          return strBerechnung;
+        }
+
+        try {
           return eval(str).toString().replace('.', ',');
         } catch(err) {
           alert('Eingabefehler!');

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canvas Animation</title>
+  <style media="screen">
+    canvas {
+      border: 1px solid black;
+      background-color: lavender;
+    }
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      const c = document.getElementById('canvas');
+      const ctx = c.getContext('2d');
+      let y = 0;
+      let x = 0;
+      let speed = 3; // x-Verschiebungswert
+      const breite = 30;
+      const hoehe = 30;
+
+      // zeichne();
+      animiere();
+
+      function animiere(){
+        x += speed;
+        zeichne();
+        requestAnimationFrame(animiere);
+      }
+
+      function zeichne(){
+        ctx.clearRect(0, 0, c.width, c.height);
+        ctx.fillStyle = '#ccaa00';
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(x, y, breite, hoehe);
+        ctx.fillRect(x, y, breite, hoehe);
+      }
+
+    });
+  </script>
+</head>
+<body>
+  <canvas id="canvas" width="600" height="400"></canvas>
+</body>
+</html>

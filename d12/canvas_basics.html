@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canvas Basics</title>
+  <style media="screen">
+    canvas {
+      border: 1px solid black;
+      background-color: lavender;
+    }
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      const canvas = document.getElementById('canvas');
+      const img = document.createElement('img');
+      img.src = 'https://franks-travelbox.com/wp-content/uploads/2017/11/franzocc88sisch-polynesien-der-sandstrand-auf-der-insel-bora-bora-in-franzocc88sisch-polynesien-erfucc88llt-alle-succ88dsee-klischees-der-besucher-wilar-shutterstock-1200x800.jpg';
+
+      img.onload = function(){
+        const ctx = canvas.getContext('2d');
+        const imgSkalierung = canvas.width / img.width; //Skalierungsfaktor
+
+        // ctx.drawImage(imgDOMElement, x, y, width, height)
+        ctx.drawImage(img, 0, 0, canvas.width, img.height*imgSkalierung);
+
+        // ctx.fillStyle = CSS3-Farbangabe (für einfache Farbangaben)
+        ctx.fillStyle = '#ffaabb';
+
+        // ctx.lineStyle = CSS3-Farbangabe (für einfache Farbangaben)
+        ctx.strokeStyle = '#900';
+        ctx.lineWidth = 3;
+
+        // ctx.fillRect(x, y, width, height)
+        ctx.fillRect(10, 10, 100, 50);
+        ctx.strokeRect(10, 10, 100, 50);
+        // ctx.clearRect(x, y, width, height)
+
+        ctx.beginPath();
+        ctx.moveTo(100,100);
+        ctx.lineTo(200,200);
+        ctx.lineTo(100,200);
+        ctx.closePath();
+
+        ctx.fillStyle = 'rgba(200,0,200,0.5)';
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.font = "50px Arial";
+        ctx.fillText('Südsee ist super!', 50, 300);
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 1;
+        ctx.strokeText('Südsee ist super!', 50, 300);
+      }
+    });
+  </script>
+</head>
+<body>
+  <h1>Canvas Basics</h1>
+  <canvas id="canvas" width="600" height="400">
+    Hier ist ein Canvas-Bereich.
+    Falls Sie diesen Text sehen, unterstützt ihr Browser
+    keine Canvas-Element.
+  </canvas>
+</body>
+</html>

@@ -14,19 +14,55 @@
         // Das Regular Expression Literal ist kein Kein String und wird daher OHNE Hochkommas festgelegt
         // Struktur: /muster/modifikator
         // Modifikatoren: i=case insensitive, g=global, m=multiline
-        const regExp1 = /he/gi;
+        const regExp1 = /he/;
 
         let str = "Hello world, hello Vienna, hello everybody! Is there anyone?";
         //str = str.replace('he', '!'); // nur das erste Vorkommnis wird bei einem String-Argument ersetzt
-        console.log('step1: ' + str.replace(regExp1, '!') );
+        console.log('step1: ' + str.replace(/he/gi, '!') );
 
 
         // Quantifiers
-        // + legt fest, dass das vorhergehende Zeichen ein oder mehrere Male im Suchmuster vorkommen muss
-        // * legt fest, dass das vorhergehende Zeichen beliebig oft vorkommen darf, aber nicht muss
-        // console.log( str.replace(/hel+/gi, '?') );
-        console.log( str.replace(/hel*/gi, '?') );
+          // * legt fest, dass das vorhergehende Zeichen beliebig oft vorkommen darf, aber nicht muss
+        console.log( 'step 2: ' + str.replace(/hel*/gi, 'ß') );
 
+          // + legt fest, dass das vorhergehende Zeichen ein oder mehrere Male im Suchmuster vorkommen muss
+        console.log( 'ABCCC AB ABC'.replace(/abc+/gi, '?') );
+
+          // ? legt fest , dass das vorhergehende Zeichen einmal oder keinmal im Suchmuster vorkommt
+        console.log( 'ABCCC AB ABC'.replace(/abc?/gi, '?') );
+
+          // {n, m} n legt die mindeste Anzahl an Vorkommnissen fest,
+          // m die maximale Anzahl
+        console.log( 'ABCCC AB ABC'.replace(/abc{0,2}/gi, '?') );
+
+        // Gierigkeit bei Quantifizierern
+        console.log( '<a href="url">Linktext</a>'.match(/<a.*>/) );
+        // der längstmögliche Teilstring, der dem Suchmuster entspricht, wird ermittelt
+        // daher: '<a href="url">Linktext</a>' und NICHT '<a href="url">'
+
+        // Nicht-gierige Versionen der Quantifizierer
+        // *?, +?, ??
+        console.log( '<a href="url">Linktext</a>'.match(/<a.*?>/) );
+        // Ausgabe: '<a href="url">',
+        // der kürzeste Teilstring, der dem Suchmuster entspricht, wird ermittelt
+
+        // Zeichenklasse
+          // . legt ein beliebiges Zeichen fest
+        console.log('step 3: ' + 'eins, zwei, drei'.replace(/.?ei/g, '') );
+
+          // [abc] in eckigen Klammern lässt sich ein Zeichenbereich innerhalb
+          // des Suchmusters festlegen
+        console.log('eins, zwei, drei'.replace(/[wxy]ei/g, '!') );
+          // auch mit Quantifizierer kombinierbar...
+        console.log('eins, zwei, drei'.replace(/[wxy]?ei/g, '?') );
+
+        // statt [0123456789] lässt sich [0-9]
+        // statz [abcdefg] auch [a-g]
+
+          // oder als Zeichenbereich der exkludiert ist [^xyz]
+        console.log('eins, zwei, drei'.match(/[^wxy]ei/g) );
+
+        console.log('eins, zwei, drei'.replace(/eins|zwei|drei/g, 'Zahl(1-3)'));
 
         document.getElementById('button').onclick = function(){
 
