@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Function</title>
+  <script>
+
+    function init (){
+      console.log('Funktion wurde aufgerufen');
+    }
+    init();
+
+    // IIFE (Immediately Invoked Function Expressions)
+    // IIFE bieten die Möglichkeit eine Initialisierungsfunktion EINMALIG
+    // aufzurufen, ohne dass ein weiterer Funktionsaufruf möglich ist.
+    // Speziell bei modularer Entwicklung ist dies von Vorteil.
+
+    (function(){
+      // console.log('IIFE-Funktion wurde aufgerufen');
+      let foo = 23;
+
+      function xy(){
+          console.log('xy wurde aufgerufen, foo: ' + foo);
+      }
+
+      window.onload = function(){
+        xy();
+      }
+
+    })();
+
+    // Generische Funktionen mit Closures
+
+    // 'Normale' Funktion:
+    function multipliziere(a, b){
+      return a * b;
+    }
+
+    console.log( 'multipliziere(5, 8): ' + multipliziere(5, 8) );
+
+    // Generische Funktion:
+    // Funktionsparameter sind für untergeordete Funktionen (so wie auch Variable)
+    // sichtbar (a). Der Rückgabewert von 'funktionMultipliziere' ist gleichfalls
+    // eine function.
+    function funktionMultipliziere(a){
+      return function(b){
+        return a * b;
+      }
+    }
+
+    // mal25 enthält eine generische Funktion
+    const mal25 = funktionMultipliziere(25);
+    console.log('mal25(8): ' + mal25(8));
+
+    // Konstruktor-Funktion
+    function Person(name, alter){
+      this.name = name;
+      this.alter = alter;
+      this.adresse = '';
+
+      // this.zeigeAlter = function(){
+      //   console.log(this.name + ' sagt: Mein Alter ist ' + this.alter);
+      // }
+    }
+
+    Person.prototype.zeigeAlter = function(){
+      console.log(this.name + ' sagt: Mein Alter ist ' + this.alter);
+    }
+
+    const susi = new Person('Susanne Muster', 24);
+    const peter = new Person('Peter Mustermann', 35);
+    console.dir(susi);
+    console.dir(peter);
+
+    susi.zeigeAlter();
+    peter.zeigeAlter();
+
+    // dynamische Zuweisung einer Methode zu einer (einzigen!) Objekt-Instanz
+    // nicht unbedingt Best-Practice!
+    // Objekte in JS sind dynamisch. Es lassen sich einzelnen Instanzen
+    // also 'on-the-fly' zusätzliche Eigenschaften zuweisen
+    susi.susisMethode = function(){
+      console.log('Susis exklusive Methode wurde aufgerufen');
+    };
+
+    susi.susisMethode();
+
+    // delete lösch Objekteigenschaften
+    delete susi.susisMethode;
+
+    //susi.susisMethode(); // JS Exception, susisMethode existiert nicht mehr
+
+  </script>
+</head>
+<body>
+
+</body>
+</html>
