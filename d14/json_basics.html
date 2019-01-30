@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script>
+    // die im folgenden JS-Objekt enthaltenen Datentypen sind im JSON-Format zulässig:
+    // string, number, boolean, array, object, null
+    let obj = {
+      name: 'Fritzi',
+      alter: 24,
+      maennlich: true,
+      telefon: null,
+      kinder: [
+        {
+          name: 'Susi',
+          alter: 12,
+          maennlich: false,
+        },
+        {
+          name: 'Fabian',
+          alter: 12,
+          maennlich: true,
+        }
+      ]
+    };
+
+    console.dir( obj );
+
+    // JSON.stringify erzeugt einen standardkonformen JSON-String aus einem JS Objekt
+    // Eingenschaftsnamen werden unter Anführungszeichen gesetzt, alle einfachen Anführungszeichen
+    // werden durch doppelte ersetzt
+
+    // Dieser lässt sich nun z.B. via HTTP übertragen
+    let jsonString = JSON.stringify(obj);
+    console.log( jsonString );
+
+    // JSON.parse() erzeugt aus einem JSON-String ein JS-Objekt
+    console.dir( JSON.parse(jsonString) );
+
+  </script>
+</head>
+<body>
+
+</body>
+</html>

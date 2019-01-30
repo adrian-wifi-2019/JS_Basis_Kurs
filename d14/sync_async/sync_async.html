@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Asynchrone Ladevorgänge</title>
+
+  <!-- dieses Skript lädt asynchron... -->
+  <script src="async.js" async></script>
+  <!-- ...und verzögert durch seinen Ladevorgang NICHT das Einlesen
+  weiterer Skripts und des DOMs (Ladedauer ist unbekannt)-->
+  <script>
+    // wird im Regelfall vor dem asynchron geladenen Skript ausgeführt
+    alert('Internes Script');
+  </script>
+
+</head>
+<body>
+  <!-- Mediendaten laden von Haus aus IMMER asynchron -->
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Wirtschaftsf%C3%B6rderungsinstitut_logo.svg/1200px-Wirtschaftsf%C3%B6rderungsinstitut_logo.svg.png" alt="">
+</body>
+</html>

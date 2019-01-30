@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XHR - XMLHttpRequest</title>
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      const inputEingabe = document.getElementById('eingabe');
+
+      document.getElementById('btn').onclick = function(){
+        const eingabe = inputEingabe.value;
+        // XHR-Objekt wird gebildet
+        const xhr = new XMLHttpRequest();
+        // via open()-Methde legen wir HTTP-Methode und URL fest
+        xhr.open('POST', 'http://wifiwien.000webhostapp.com/x.php');
+        // der default Content-Type 'text/plain' wird als Request-Header überschrieben
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        // die send()-Methode sendet den Request an den Server
+        xhr.send('x=' + eingabe);
+
+        xhr.onreadystatechange = function(e){
+          console.log('xhr.readyState: ' + xhr.readyState + ', HTTP-Status: ' + xhr.status);
+          // Antwort ist da
+          if(xhr.readyState === 4){
+            if(xhr.status === 200){
+              // erfolgreiche Datenübertragung
+              let ergebnisObj = JSON.parse(xhr.responseText);
+              alert('Ergebnis ist ' + ergebnisObj.x2);
+            } else {
+              // Error in der Datenübertragung
+              console.log('Error: ' + xhr.statusText);
+            }
+          }
+        }
+      }
+    });
+  </script>
+</head>
+<body>
+  <input type="text" id="eingabe">
+  <button type="button" id="btn">Errechnen</button>
+</body>
+</html>
