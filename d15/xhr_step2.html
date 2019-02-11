@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XHR - XMLHttpRequest</title>
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      const inputEingabe = document.getElementById('eingabe');
+      let datenUebertragung = false;
+
+      document.getElementById('btn').onclick = function(){
+
+        if(datenUebertragung)
+          return;
+        datenUebertragung = true;
+
+        const eingabe = inputEingabe.value;
+
+        // XHR-Objekt wird gebildet
+        const anfrage = new XMLHttpRequest();
+        // via open()-Methde legen wir HTTP-Methode und URL fest
+        anfrage.open('POST', 'http://wifiwien.000webhostapp.com/x.php');
+        // der default Content-Type 'text/plain' wird als Request-Header überschrieben
+        anfrage.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        // die responseType-Eigenschaft legt fest, welches Datenformat vom Server erwartet wird
+        anfrage.responseType = 'json';
+        // die send()-Methode sendet den Request an den Server
+        anfrage.send('x=' + eingabe);
+
+        anfrage.onreadystatechange = function(e){
+          console.log('anfrage.readyState: ' + anfrage.readyState + ', HTTP-Status: ' + anfrage.status);
+          // Antwort ist da
+          if(anfrage.readyState === 4){
+            if(anfrage.status === 200){
+              // erfolgreiche Datenübertragung
+              // bei default resonseType 'text' oder '' kann auf responseText zugegriffen werden
+              // let ergebnisObj = JSON.parse(anfrage.responseText);
+
+              // bei responseType ='json' wird die Server-Antwort automatisch in ein JSON-Objekt verwandelt
+              // und ist über die respond-Eigenschaft verfügbar
+              let ergebnisObj = anfrage.response;
+
+              if(ergebnisObj.fehler)
+                alert(ergebnisObj.fehler)
+              else if(ergebnisObj.x2)
+                alert('Ergebnis ist ' + ergebnisObj.x2);
+              else
+                alert('Something went completly wrong!')
+
+            } else {
+              // Error in der Datenübertragung
+              console.log('Error: ' + anfrage.statusText);
+            }
+
+            datenUebertragung = false;
+          }
+        }
+      }
+    });
+  </script>
+</head>
+<body>
+  <input type="text" id="eingabe">
+  <button type="button" id="btn">Errechnen</button>
+</body>
+</html>

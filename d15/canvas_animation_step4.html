@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canvas Animation</title>
+
+  <style media="screen">
+    canvas { border: 1px solid black; background-color: lavender; }
+  </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      const c = document.getElementById('canvas');
+      const ctx = c.getContext('2d');
+
+      ctx.fillStyle = '#ccaa00';
+      ctx.strokeStyle = 'black';
+      ctx.lineWidth = 2;
+
+      let speed = 30; // x-Verschiebungswert
+      const breite = 30;
+      const hoehe = 30;
+
+      const quadrate = [ {x: 0, y: 0} ];
+
+      animiere();
+
+      function animiere(){
+        let objAnim = quadrate[quadrate.length - 1];
+        let objLastStatic = (quadrate.length > 1) ? quadrate[quadrate.length - 2] : {x: -breite, y: c.height - hoehe};
+        let endPoint = false;
+
+        if(
+            (speed > 0 && objAnim.x >= objLastStatic.x - breite) ||
+            (speed < 0 && objAnim.x <= objLastStatic.x + breite)
+          )
+        {
+          // Endpunkt auf der X-Achse erreicht
+          // Überprüfung, ob innnerhalb der obersten befüllten Zeile
+          endPoint = (objAnim.y >= objLastStatic.y);
+        }
+
+        if ( (speed > 0 && objAnim.x >= c.width - breite) || (speed < 0 && objAnim.x <= 0) ) {
+          // Am Zeilenende (links oder rechts) angelangt...
+          if(
+            (objAnim.y >= objLastStatic.y - hoehe) &&
+            (
+              (speed > 0 && objLastStatic.x >= c.width - breite) ||
+              (speed < 0 && objLastStatic.x <= 0)
+            )
+          ){
+            // die Zeile unterhalb ist voll, daher Endpunkt am Zeilenende
+            endPoint = true;
+          } else {
+            // noch Platz in der nächsten Zeile, daher rückt die y-Position eine Zeile tiefer
+            objAnim.y += hoehe;
+            speed *= -1;
+          }
+
+        } else if (endPoint === false){ // Nicht am Endpunkt und auch nicht am Zeilenende...
+            objAnim.x += speed;
+        }
+
+        if(endPoint)  {
+            quadrate.push( {x: 0, y: 0} );
+            speed = Math.abs(speed);
+        }
+        zeichne();
+        requestAnimationFrame(animiere);
+        // setTimeout(animiere, 300); // zum Testen
+      }
+
+      // Darstellung wird gerendert (View)
+      function zeichne(){
+        ctx.clearRect(0, 0, c.width, c.height);
+        quadrate.forEach( function(quadrat){
+          ctx.strokeRect(quadrat.x, quadrat.y, breite - ctx.lineWidth/2, hoehe - ctx.lineWidth/2);
+          ctx.fillRect(quadrat.x, quadrat.y, breite - ctx.lineWidth/2, hoehe - ctx.lineWidth/2);
+        });
+      }
+    }); // Ende 'DOMContentLoaded'
+  </script>
+</head>
+<body>
+  <!-- die canvas-height muss sich momentan durch hoehe*2 genau teilen lassen -->
+  <!-- TODO: JS-Routinen so anpassen, dass eine beliebige canvas-height gesetzt werden kann -->
+  <canvas id="canvas" width="300" height="150"></canvas>
+</body>
+</html>

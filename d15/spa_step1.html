@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Single Page Application</title>
+  <style media="screen">
+    body{
+      font-size: 1.25em;
+    }
+    ul{
+      list-style: none;
+      display: flex;
+      margin: 0;
+      padding: 0;
+    }
+    li {
+      position:relative;
+      top: 1px;
+    }
+    li > a {
+      text-decoration: none;
+      border: 1px solid black;
+      border-radius: 10px 10px 0 0;
+      background-color: #ccc;
+      padding: 10px;
+      color: black;
+      display: inline-block;
+    }
+    a.aktiv {
+      background-color: white;
+      border-bottom: 1px solid white;
+    }
+    .main {
+      border: 1px solid black;
+      min-height: 100px;
+      padding: 40px;
+    }
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script>
+    //$(document).ready( function(){...} );
+
+    // empfohlene Kurschreibweise von $(document).ready()
+    $( function(){
+
+      ladeSeite(1);
+
+      $('a[data-seite]').click( function(e){
+        // console.dir(e);
+        e.preventDefault();
+        $('.aktiv').removeClass('aktiv');
+        $(this).addClass('aktiv');
+        ladeSeite( $(this).attr('data-seite') );
+
+      }); // Ende click-Handler
+
+      function ladeSeite(seitenNummer){
+        //jQuery.ajax()
+        $.ajax( {
+          url:'https://wifiwien.000webhostapp.com/content-page-' + seitenNummer + '.php',
+          success: function(antwort){
+            // console.log(antwort);
+            $('.main').html(antwort);
+          },
+          error: function(xhr, fehlerText){
+            console.log(fehlerText);
+          }
+        } );
+      }
+
+    }); // Ende IIFE
+  </script>
+</head>
+<body>
+  <ul>
+    <li><a href="#" data-seite="1" class="aktiv">Menüpunkt 1</a></li>
+    <li><a href="#" data-seite="2">Menüpunkt 2</a></li>
+    <li><a href="#" data-seite="3">Menüpunkt 3</a></li>
+  </ul>
+  <div class="main">
+
+  </div>
+</body>
+</html>
