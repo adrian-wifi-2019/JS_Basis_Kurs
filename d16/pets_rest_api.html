@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+  <script>
+      $(function(){
+        $('button#zeigeAlle').click( function(){
+          console.log('geklickt');
+          $.ajax( {
+            url:'https://petstore.swagger.io/v2/pet/findByStatus',
+            data:{status:'available'},
+            dataType:'json', // kann man weg lassen, da der Response Header den MIME Type verrät
+            success: function(tierliste){
+              console.dir(tierliste);
+            }
+          } );
+        });
+      });
+  </script>
+
+  <style media="screen">
+    * {
+      font-size: 1.25em;
+      font-family: sans-serif;
+    }
+    .ergebnis {
+      margin-top: .5em;
+      border: 1px solid;
+      min-height: 5em;
+    }
+  </style>
+</head>
+<body>
+  <button type="button" id="zeigeAlle">Zeige Haustiere</button>
+  <div id="ergebnis" class="ergebnis">
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verschiedene Varianten zu AJAX Requests</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script>
+    // $(document).ready( function(){
+    //   $('button:nth-of-type(1)').on('click', function(){
+    //     //...
+    //   });
+    // });
+
+    $(document).on('click', 'button:nth-of-type(1)', function(){
+      $.ajax({
+        url: 'https://wifiwien.000webhostapp.com/r_get_html.php',
+        // type: 'GET', // 'GET' ist default
+        // contentType: 'application/x-www-form-urlencoded',  // default am Server
+        data: {x:1},
+        // dataType: 'json', // die einlangenden Daten werden per default als
+        // Text interpretiert. Bei Angabe dataType: 'json' wird der einlangende JSON String
+        // automatisch in ein JS-Objekt konvertiert
+        success: function( antwort ){
+          // da kein Content-Type Header vom Server den MIME Type der
+          // Daten beschreibt und auch kein entsprechender dataType festgelegt
+          // wurde, werden die einlangenden Daten als Text interpretiert
+          const daten = JSON.parse(antwort);
+          console.log( 'x ist ' + daten.x );
+        }
+      });
+    });
+
+    $(document).on('click', 'button:nth-of-type(2)', function(){
+      $.ajax({
+        url: 'https://wifiwien.000webhostapp.com/r_post_html.php',
+        type: 'POST',
+        data: {x:1},
+        success: function( antwort ){
+          // der String wird geparst
+          const daten = JSON.parse(antwort);
+          console.log( 'x ist ' + daten.x );
+
+          // bei Angabe dataType: 'json':
+          // console.log( 'x ist ' + antwort.x );
+        }
+      });
+    });
+
+    $(document).on('click', 'button:nth-of-type(3)', function(){
+      $.ajax({
+        url: 'https://wifiwien.000webhostapp.com/r_post_json.php',
+        type: 'POST',
+        data: {x:1},
+        /// dataType: 'json', // nicht zwingend notwendig zur Umwandlung
+        // da der Response Header 'Content-Type:application/json' vorhanden ist
+        // -> siehe Intelligent Guess
+        success: function( antwort ){
+          console.log( 'x ist ' + antwort.x );
+        }
+      });
+    });
+
+    $(document).on('click', 'button:nth-of-type(4)', function(){
+      $.ajax({
+        url: 'https://wifiwien.000webhostapp.com/r_json_json.php',
+        type: 'POST',
+        data: JSON.stringify( {x:1} ),
+        // contentType: 'application/json',
+        success: function( antwort ){
+          console.log( 'x ist ' + antwort.x );
+        }
+      });
+    });
+
+    $(document).on('click', 'button:nth-of-type(5)', function(){
+      $.ajax({
+        url: 'https://wifiwien.000webhostapp.com/ecb.php',
+        dataType: 'xml',
+        success: function( antwort ){
+          // ohne dataType Angabe wird der Response als String angegeben,
+          // da kein Content-Type Response Header mitgeschickt wird
+          // console.log( 'Wechselkurse: ' + antwort );
+
+          // mit dataType:xml wird der Response in ein XML-Objekt konvertiert:
+          console.dir(antwort);
+        }
+      });
+    });
+
+  </script>
+</head>
+<body>
+<button type="button">GET PARAM -> Text</button>
+<button type="button">POST PARAM -> Text</button>
+<button type="button">POST PARAM -> JSON</button>
+<button type="button">POST JSON -> JSON</button>
+<button type="button">GET XML</button>
+</body>
+</html>
