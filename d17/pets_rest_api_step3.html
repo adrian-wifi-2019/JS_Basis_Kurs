@@ -1,0 +1,209 @@
+<!doctype html>
+<html>
+<head>
+	<title>Haustiere via REST API</title>
+	<meta charset="utf-8">
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+	<script>
+	'use strict';
+
+	$(function() {
+		ladeAlle();
+	}); // end ready
+
+	function buttonKlick(b){
+			let methode, callback;
+			let dataType = 'json';
+			let url = 'https://petstore.swagger.io/v2/pet/';
+			let data = {};
+			let contentType = 'application/json';
+			let btn = $(b);
+
+			if ( btn.hasClass('btn_get') ) {
+				methode = 'GET';
+				url += btn.attr('data-id');
+				callback = zeigeDetails;
+			} else if ( btn.hasClass('btn_delete') ) {
+				methode = 'DELETE';
+				url += btn.attr('data-id');
+				callback = ladeAlle;
+				dataType = 'text';
+			} else if ( btn.hasClass('btn_new') ) {
+				methode = 'POST';
+				callback = ladeAlle;
+
+				data = JSON.stringify(
+					{
+					  "id": $('#petId').val(),
+					  "category": {
+							"id": 0,
+							"name": "wifiwien"
+					  },
+					  "name": $('#petName').val(),
+					  "photoUrls": [
+							$('#petBild').val()
+					  ],
+					  "status": "available"
+					}
+				);
+				$('#petId').val('');
+				$('#petName').val('');
+				$('#petBild').val('');
+			} else if ( btn.hasClass('btn_change') ) {
+				methode = 'POST';
+				callback = ladeAlle;
+				url += btn.attr('data-id');
+				contentType = 'application/x-www-form-urlencoded';
+				data = { name: $('#petNameDetail').val() };
+				dataType = 'text';
+			} else if ( btn.hasClass('btn_close') ) {
+				zeigeSeite(1);
+				return;
+			} else {
+				console.error('Unbekannter Button-Klick!');
+				console.dir(btn);
+				return;
+			}
+
+			serverAnfrage(url, methode, callback, dataType, data, contentType);
+		}
+
+		function ladeAlle(){
+			serverAnfrage('https://petstore.swagger.io/v2/pet/findByStatus?status=available', 'GET', zeigeAlle, 'json', {}, '');
+		}
+
+		function serverAnfrage(url, methode, callback, dataType, data, contentType){
+			$.ajax({
+				url: url,
+				type: methode,
+				data: data,
+				contentType: contentType,
+				dataType: dataType,
+				success: function(antwort) {
+					// console.dir(antwort);
+					callback(antwort);
+				},
+				error: function(xhr, status, error){
+					$('#ergebnis').html( 'Error: ' + error + '<br><button onclick="ladeAlle()">Zurück</button>');
+					zeigeSeite(1);
+					console.dir(xhr);
+				}
+			});
+		}
+
+		function zeigeAlle(tierListe){
+			let ausgabe = '';
+
+			$.each(tierListe, function(i, tier){
+				if(tier.category && tier.category.name === 'wifiwien'){
+					ausgabe += '<tr><td>' + tier.id + '</td><td>' + tier.name + '</td>'
+					ausgabe += '<td><button class="btn btn_get" onclick="buttonKlick(this)" data-id="' + tier.id + '">Details</button></td>';
+					ausgabe += '<td><button class="btn btn_delete" onclick="buttonKlick(this)" data-id="' + tier.id + '">Löschen</button></td></tr>';
+				}
+			});
+
+			// for(let tier of tierListe){
+			// 	if(tier.category && tier.category.name === 'wifiwien'){
+			// 		ausgabe += '<tr><td>' + tier.id + '</td><td>' + tier.name + '</td>'
+			// 		ausgabe += '<td><button class="btn btn_get" onclick="buttonKlick(this)" data-id="' + tier.id + '">Details</button></td>';
+			// 		ausgabe += '<td><button class="btn btn_delete" onclick="buttonKlick(this)" data-id="' + tier.id + '">Löschen</button></td></tr>';
+			// 	}
+			// }
+
+			if(ausgabe === '')
+				ausgabe = 'Keine Tiere gefunden';
+			else
+				ausgabe = '<table class="tierliste"><tr><th>ID</th><th>Name</th><th>Zeigen</th><th>Löschen</th></tr>' + ausgabe + '<table>'
+
+			$('#ergebnis').html( ausgabe );
+
+			zeigeSeite(1);
+		}
+
+		function zeigeDetails(tier){
+			$('#petIdDetail').val(tier.id);
+			$('#petNameDetail').val(tier.name);
+			$('.btn_change').attr('data-id', tier.id);
+
+			if(tier.photoUrls && tier.photoUrls.length > 0 && tier.photoUrls[0] !== ''){
+				$('#portrait').show().attr('src', tier.photoUrls[0]);
+			} else {
+				$('#portrait').hide();
+			}
+
+			zeigeSeite(2);
+		}
+
+		function zeigeSeite(seitenNum){
+			if(seitenNum === 1){
+				// $('#ergebnis').show();
+				// $('.details').hide();
+				$('.details').fadeOut( function(){ $('#ergebnis').fadeIn(); } );
+			} else {
+				// $('#ergebnis').hide();
+				// $('.details').show();
+				$('#ergebnis').fadeOut( function(){ $('.details').fadeIn(); } );
+			}
+		}
+
+	</script>
+	<style>
+	* {
+		font-size:1.2rem;
+		font-family: sans-serif;
+		padding: .2em;
+	}
+	.inhaltsblock {
+		margin-top: 1em;
+		padding: 0.5em;
+		border: 1px solid;
+	}
+	.tierliste{
+		padding: .5em;
+		border: 1px solid;
+		background-color: white;
+	}
+	.details{
+		background-color: cadetblue;
+	}
+	.topnavi{
+		background-color: bisque;
+	}
+	.ausgeblendet{
+		display:none;
+	}
+	.ergebnis{
+		background-color: khaki;
+	}
+	td {
+		padding: 0.5em;
+	}
+	input, button {
+		padding: 0.3em;
+		margin: 0.3em;
+  	border-radius: 0.2em;
+	}
+	</style>
+</head>
+<body>
+
+	<div class="inhaltsblock topnavi">
+		<input type="text" id="petId" value="" placeholder="ID">
+		<input type="text" id="petName" value="" placeholder="Name">
+		<input type="text" id="petBild" value="" placeholder="Bild-URL">
+		<button class="btn btn_new" onclick="buttonKlick(this)">Neues Haustier</button>
+	</div>
+
+	<div id="ergebnis" class="ausgeblendet inhaltsblock ergebnis"></div>
+
+	<div class="details ausgeblendet inhaltsblock">
+		<img id="portrait" src="#" alt="Tierbild" class="ausgeblendet"><br>
+		<input type="text" id="petIdDetail" readonly disabled><br>
+		<input type="text" id="petNameDetail">
+		<button class="btn btn_change" onclick="buttonKlick(this)" data-id="">Ändern</button>
+		<button class="btn btn_close" onclick="buttonKlick(this)">Schließen</button>
+	</div>
+
+</body>
+</html>

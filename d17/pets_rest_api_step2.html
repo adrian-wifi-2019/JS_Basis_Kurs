@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+  <script>
+      $(function(){
+        ladeAlle();
+      });
+
+      function buttonKlick(b){
+        const btn = $(b);
+        let url = 'https://petstore.swagger.io/v2/pet';
+        let data = { };
+        let methode;
+        let callback;
+        let contenType;
+        let dataType = 'json';
+
+        if(btn.hasClass('btn_new')){
+          data = JSON.stringify(
+            {
+              "id": $('#petId').val(),
+              "category": {
+                "id": 0,
+                "name": "wifiwien"
+              },
+              "name": $('#petName').val(),
+              "photoUrls": [
+                $('#petBild').val()
+              ],
+              "status": "available"
+            }
+          );
+          methode = 'POST';
+          callback = ladeAlle;
+          contentType = 'application/json';
+        } else if ( btn.hasClass('btn_delete') ){
+          url += '/' + btn.attr('data-id');
+          methode = 'DELETE';
+          callback = ladeAlle;
+          contentType = false;
+          dataType = 'text';
+        } else if ( btn.hasClass('btn_detail') ){
+          url += '/' + btn.attr('data-id');
+          methode = 'GET';
+          callback = zeigeDetails;
+          contentType = false;
+        } else if ( btn.hasClass('btn_change') ){
+          url += '/' + btn.attr('data-id');
+          methode = 'POST';
+          data = { name: $('#petNameDetail').val() };
+          callback = ladeAlle;
+          contentType = 'application/x-www-form-urlencoded; charset=UTF-8';
+          dataType = 'text';
+        }
+
+        serverAnfrage(url, data, methode, callback, contentType, dataType);
+      }
+
+      function ladeAlle(){
+        serverAnfrage(
+          'https://petstore.swagger.io/v2/pet/findByStatus',
+          {status:'available'},
+          'GET',
+          zeigeAlle,
+          'application/x-www-form-urlencoded; charset=UTF-8',
+          'json'
+        );
+
+        $('#ergebnis').show();
+        $('.details').hide();
+      }
+
+      function serverAnfrage(url, data, methode, callback, contentType, dataType){
+        $.ajax( {
+          url: url,
+          type: methode,
+          data: data,
+          contentType: contentType,
+          dataType: dataType,
+          success: function(antwort){
+            //console.dir(tierListe);
+            callback(antwort);
+          },
+          error: function(){
+            //...-
+          }
+        } );
+      }
+
+      function zeigeAlle(tierListe){
+        let ausgabe = '';
+
+        for(let tier of tierListe){
+          if(tier.category && tier.category.name === 'wifiwien'){
+            ausgabe += '<tr><td>' + tier.id + '</td><td>' + tier.name + '</td>';
+            ausgabe += '<td><button class="btn_detail" data-id="' + tier.id + '" onclick="buttonKlick(this)">Details</button></td>';
+            ausgabe += '<td><button class="btn_delete" data-id="' + tier.id + '" onclick="buttonKlick(this)">Löschen</button></td></tr>';
+          }
+        }
+
+        if(ausgabe === '')
+          ausgabe = 'Keine Tiere gefunden.'
+        else
+          ausgabe = '<table class="tierliste inhaltsblock"><tr><th>ID</th><th>Name</th><th>Details</th><th>Löschen</th></tr>' + ausgabe + '</table>';
+
+        $('#ergebnis').html(ausgabe);
+      }
+
+      function zeigeDetails(tier){
+        //console.dir(tier);
+        $('#petIdDetail').val(tier.id);
+        $('#petNameDetail').val(tier.name);
+        $('.btn_change').attr('data-id', tier.id);
+
+        $('#ergebnis').hide();
+        $('.details').show();
+      }
+
+  </script>
+
+  <style media="screen">
+    * {
+      font-size: 1.2rem;
+      font-family: sans-serif;
+    }
+    .inhaltsblock{
+      margin-top: .5em;
+      padding: .5em;
+      border: 1px solid black;
+    }
+    .topnavi{
+      background-color: bisque;
+    }
+    .ergebnis {
+      min-height: 5em;
+      background-color: khaki;
+    }
+    .tierliste{
+      background-color: white;
+    }
+    .details {
+      background-color: cadetblue;
+      display: none;
+    }
+    td {
+      padding: .5em;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="topnavi inhaltsblock">
+    <input type="text" id="petId" placeholder="ID">
+    <input type="text" id="petName" placeholder="Name">
+    <input type="text" id="petBild" placeholder="Bild-URL">
+    <button type="button" class="btn_new" onclick="buttonKlick(this)">Neues Haustier</button>
+  </div>
+
+  <div id="ergebnis" class="ergebnis inhaltsblock"></div>
+
+  <div class="details inhaltsblock">
+    <img id="portrait" src="#" alt="Tierbild">
+    <input type="text" id="petIdDetail" readonly disabled>
+    <input type="text" id="petNameDetail">
+    <button type="button" class="btn_change" data-id="" onclick="buttonKlick(this)">Ändern</button>
+    <button type="button" class="btn_close" onclick="buttonKlick(this)">Schließen</button>
+  </div>
+
+</body>
+</html>
