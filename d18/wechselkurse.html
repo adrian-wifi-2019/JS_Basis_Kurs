@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EUR Währungsrechner</title>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script>
+    $(function(){
+      $.ajax({
+        url: 'https://wifiwien.000webhostapp.com/ecb.php',
+        dataType: 'xml',
+        success: function( wechselkurse ){
+          //console.log(xml);
+
+          // ein Pseudo-DOM-Element wird gebildet, um mehrere Siblings gleichzeitig im DOM einzuhängen
+          const optionContainer = $( document.createDocumentFragment() );
+
+          $('[currency]', wechselkurse).each( function(index, elem){
+            // console.log( $(elem).attr('currency') );
+            // console.log( $(this).attr('currency') );
+            $('<option>')
+              .val(
+                $(elem).attr('rate')
+              )
+              .text(
+                $(elem).attr('currency')
+              )
+              .appendTo(optionContainer)
+          } );
+
+          $('#auswahl').append(optionContainer);
+
+        },
+        error: function(xhr, status, errorText){
+          console.error('AJAX Error: ' + errorText);
+        }
+      });
+
+      $('#auswahl').on('change', function(ereignis){
+        const summeEUR = $('#eingabe').val();
+        const kurs = $('#auswahl').val();
+
+        if( isNaN(kurs) ) {
+          console.log('Die Default-Auswahl der Select-Box wurde gewählt.');
+          return;
+        }
+
+        if( isNaN( summeEUR ) || summeEUR === '' ){
+          $('#ausgabe').text('Kein gültiger Zahlenwert');
+          $('#eingabe').focus();
+          return;
+        }
+
+        const ergebnis = summeEUR * kurs;
+
+        const selectedDOMOption = $('#auswahl').prop('options')[ $('#auswahl').prop('selectedIndex') ];
+        const optionsLabel = $(selectedDOMOption).text();
+
+        $('#ausgabe').text( summeEUR + ' EUR = ' + ergebnis + ' ' + optionsLabel);
+      });
+    });
+
+  </script>
+
+</head>
+
+<body>
+
+  <div id="rechner">
+    <input type="text" id="eingabe" placeholder="Betrag">
+    <select id="auswahl">
+      <option>Währung wählen...</option>
+    </select>
+    <span id="ausgabe">Ausgabe hier</span>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>$.each() und $(Selektor).each()</title>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script>
+
+    // $.each(liste, callback) mit Arrays (Methode des jQuery Core Objects)
+    const liste = ['Peter', 'Susi', 'Emil'];
+
+    $.each( liste, function(iterator, eintrag){
+      console.log('Listeneintrag ' + iterator + ': ' + eintrag);
+    });
+
+    // $.each(obj, callback) mit Objekten (Methode des jQuery Core Objects)
+    const obj = {
+      vorname: 'Peter',
+      nachname: 'Mustermann',
+      adresse: 'Lange Straße 54'
+    }
+
+    $.each( obj, function(name, wert){
+      console.log('Objekteigenschaft ' + name + ': ' + wert);
+    });
+
+
+    // $(Selektor).each(callback)  (Methode von jQuery DOM Collections)
+
+    // Die callback-Funktion wird im Kontext des jeweiligen DOM-Elements aufgerufen.
+    // Es lässt sich daher innerhalb der callback-Funktion auch via 'this' auf
+    // das jeweilige DOM-Element verweisen.
+
+    $(function(){
+      $('div').each( function( index, elem ){
+
+        // Zugriff auf das jeweilige DOM/BOM-Element via 'elem'-Parameter...
+        // $( elem ).text('Index innerhalb der jQuery DOM-Collection: ' + index);
+
+        // ...oder via 'this'...
+        $( this ).text('Index innerhalb der jQuery DOM-Collection: ' + index);
+
+      });
+    });
+
+  </script>
+
+  <style media="screen">
+    div {
+      padding: 1em;
+      font-family: sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+</body>
+</html>

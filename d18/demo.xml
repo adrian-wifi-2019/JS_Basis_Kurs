@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Dokumentetyp-Deklaration ist optional, die default XML-Textcodierung ist UTF-8 -->
+<!-- alle xml-Tags müssen sich innerhalb eines root-Elements befinden -->
+<personen>
+  <!-- jeder Tag kann beliebige Attribute, untergeordnete Tags und/oder Textinhalte enthalten  -->
+  <!-- jeder Attributwert muss unter Anführuingszeichen stehen -->
+  <person geschlecht="m">
+    <adresse>Musterstraße 11</adresse>
+    <!-- <alter jahre="35"></alter>  -->
+    <!-- selbstschließender Tag: -->
+    <alter jahre="35" />
+  </person>
+
+</personen>

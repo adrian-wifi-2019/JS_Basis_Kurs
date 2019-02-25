@@ -139,7 +139,15 @@
 			if(seitenNum === 1){
 				// $('#ergebnis').show();
 				// $('.details').hide();
-				$('.details').fadeOut( function(){ $('#ergebnis').fadeIn(); } );
+				// $('.details').fadeOut( function(){ $('#ergebnis').fadeIn(); } );
+				$('.details').fadeOut(
+					1000,
+					function(){
+						console.log('fade out fertig');
+						$('#ergebnis').fadeIn();
+					}
+				);
+
 			} else {
 				// $('#ergebnis').hide();
 				// $('.details').show();
