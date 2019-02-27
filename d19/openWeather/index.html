@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Das Wetter</title>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script>
+    $(function(){
+      const ajaxBaseURL = 'http://api.openweathermap.org/data/2.5/weather';
+      const iconBaseURL = 'http://openweathermap.org/img/w/';
+      const appId = '26078130da4d36107c8f4395722b093b';
+
+      let ladeIndex = 0;
+
+      const staedte = [
+        { plz: '1010', iconX: '246', iconY: '34' },
+        { plz: '3100', iconX: '210', iconY: '38' },
+        { plz: '4020', iconX: '170', iconY: '32' },
+        { plz: '5020', iconX: '132', iconY: '60' },
+        { plz: '6020', iconX: '70', iconY: '85' },
+        { plz: '6900', iconX: '14', iconY: '72' },
+        { plz: '7100', iconX: '254', iconY: '54' },
+        { plz: '8010', iconX: '220', iconY: '96' },
+        { plz: '9020', iconX: '178', iconY: '120' }
+      ];
+
+      // $.each(staedte, function(index, stadtObj){
+      //   ladeStadt(stadtObj);
+      // });
+
+      ladeWeiter();
+
+      function ladeWeiter(){
+        if(ladeIndex < staedte.length){
+          ladeStadt(staedte[ladeIndex]);
+          ladeIndex ++;
+        }
+      }
+
+      function ladeStadt(stadtObj){
+
+        $.ajax({
+          url: ajaxBaseURL,
+          data: {
+            zip: stadtObj.plz + ',at',
+            appid: appId,
+            mode: 'xml',
+            units: 'metric'
+          },
+          dataType: 'text',
+          success: function( wetterXML ){
+            console.log(wetterXML);
+            let iconURL = iconBaseURL + $('weather', wetterXML).attr('icon') + '.png';
+            $('<img>')
+              .attr('src', iconURL)
+              .addClass('icon')
+              .data( {
+                tempAktuell: $('temperature', wetterXML).attr('value'),
+                tempMin:     $('temperature', wetterXML).attr('min'),
+                tempMax:     $('temperature', wetterXML).attr('max')
+              })
+              .css({left:stadtObj.iconX + 'px', top: stadtObj.iconY + 'px'})
+              .appendTo($('div.karte'))
+
+              .on('mouseover', function(e){
+                //console.log( $(this).data('tempAktuell') );
+                let ausgabe = 'Aktuell: ' + $(this).data('tempAktuell') + '°<br>';
+                ausgabe += 'Min.: ' + $(this).data('tempMin') + '°<br>';
+                ausgabe += 'Max.: ' + $(this).data('tempMax') + '°<br>';
+                // console.log(ausgabe);
+                $('.details')
+                  .html(ausgabe)
+                  .css({left:stadtObj.iconX + 'px', top: stadtObj.iconY + 'px'})
+                  .show();
+              })
+              .fadeIn()
+
+            ladeWeiter();
+          },
+          error: function(xhr, status, text){
+            console.warn('Error: ' + text);
+          }
+        });
+      } // ende ladeStadt
+
+      $('.karte').on('mouseout', function(){
+        //$('.details').hide();
+      });
+
+    });
+  </script>
+  <style media="screen">
+    .karte {
+      position: relative;
+    }
+    .icon{
+      position: absolute;
+      display: none;
+    }
+    .details{
+      position: absolute;
+      display: none;
+      background-color: rgba(200, 200, 0, 0.5);
+      border: 1px solid;
+      padding: .5em;
+      z-index: 20;
+    }
+    /* img[alt] {
+      position: absolute;
+    } */
+
+  </style>
+</head>
+<body>
+  <h1>Das Wetter</h1>
+  <div class="karte">
+    <img src="images/karte_kl.jpg" alt="Wetterkarte">
+    <div class="details"></div>
+  </div>
+</body>
+</html>
