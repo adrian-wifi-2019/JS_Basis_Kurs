@@ -5,17 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <script>
+
     let subFunction;
+    let subFunction2;
 
     function mainFunction(){
-      let foo = 1;
+      let foo = 0;
 
       subFunction = function(){
         foo ++;
-        console.log('subFunction: ' + foo);
+        console.log('Gemeinsame "foo" in subFunction: ' + foo);
       }
 
-      foo = 100;
+      subFunction2 = function(){
+        foo ++;
+        console.log('Gemeinsame "foo" in subFunction2: ' + foo);
+      }
     }
 
     mainFunction();
@@ -24,6 +29,43 @@
     subFunction();
     subFunction();
     subFunction();
+
+    console.log(' ');
+
+    subFunction2();
+    subFunction2();
+    subFunction2();
+    subFunction2();
+
+    console.log(' ');
+
+
+    // *** Bei jedem Aufruf von 'createFunction' wird eine neue Closure-Funktion mit einem eigenen Wert 'foo' ausgegeben *** //
+
+    let closure1 = createFunction('closure1');
+    let closure2 = createFunction('closure2');
+
+    function createFunction(id){
+      let foo = 0;
+
+      return function(){
+        foo ++;
+        console.log('Eigene "foo" in ' + id + ': ' + foo);
+      }
+    }
+
+    closure1();
+    closure1();
+    closure1();
+    closure1();
+
+    console.log(' ');
+
+    closure2();
+    closure2();
+    closure2();
+    closure2();
+
   </script>
 </head>
 <body>
