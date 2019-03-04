@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audio Mixer Basic</title>
+
+  <!-- <link rel="stylesheet" href="ui_slider/jquery-ui.min.css"> -->
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <!-- <script src="ui_slider/jquery-ui.min.js"></script> -->
+
+  <script>
+    $(document).on('click', '#play', function(){
+      // console.log( 'Drums is checked: ' + $('#cb_drums').is(':checked') );
+      // if( $('#cb_drums').is(':checked'))
+      $('#drums')[0].play();
+
+      // if( $('#cb_guitar').is(':checked'))
+      $('#guitar')[0].play();
+
+      // if( $('#cb_organ').is(':checked'))
+      $('#organ')[0].play();
+    });
+
+    $(document).on('click', '#stop', function(){
+      $('#drums')[0].pause();
+      $('#drums')[0].currentTime = 0;
+      $('#guitar')[0].pause();
+      $('#guitar')[0].currentTime = 0;
+      $('#organ')[0].pause();
+      $('#organ')[0].currentTime = 0;
+    });
+
+    let loopAlle = false;
+
+    $(document).on('click', '#loop', function(){
+      loopAlle = !loopAlle;
+      $('#drums')[0].loop = loopAlle;
+      $('#guitar')[0].loop = loopAlle;
+      $('#organ')[0].loop = loopAlle;
+    });
+
+    // $(document).on('click', '#cb_drums', function(){
+    //   $('#drums')[0].volume = $(this).is(':checked') ? 1 : 0;
+    // });
+    //
+    // $(document).on('click', '#cb_guitar', function(){
+    //   $('#guitar')[0].volume = $(this).is(':checked') ? 1 : 0;
+    // });
+    //
+    // $(document).on('click', '#cb_organ', function(){
+    //   $('#organ')[0].volume = $(this).is(':checked') ? 1 : 0;
+    // });
+
+    $(document).on('click', '#cb_drums', 'drums', checkBoxClicked);
+    $(document).on('click', '#cb_guitar', 'guitar', checkBoxClicked);
+    $(document).on('click', '#cb_organ', 'organ', checkBoxClicked);
+    //
+    let audioListe = ['drums', 'guitar', 'organ'];
+
+    function checkBoxClicked(e){
+      // $('#' + e.data)[0].volume = $(this).is(':checked') ? 1 : 0;
+
+      let startTime = 0;
+
+      $.each(audioListe, function(i, value){
+        if(value === e.data)  return;
+        if($('#' + value)[0].paused) return;
+        startTime = $('#' + value)[0].currentTime;
+        // return false;
+      });
+
+      $('#' + e.data)[0].currentTime = startTime;
+      $(this).is(':checked') ? $('#' + e.data)[0].play() : $('#' + e.data)[0].pause();
+    }
+  </script>
+
+  <style media="screen">
+    * {
+      font-size: 1.5rem;
+    }
+    div {
+      margin-top: 1em;
+    }
+
+  </style>
+</head>
+<body>
+    <button type="button" id="play">Play</button>
+    <button type="button" id="stop">Stop</button>
+    <button type="button" id="loop">Loop</button>
+    <br>
+    <div>
+      <input type="checkbox" id="cb_drums"> Drums: <audio id="drums" controls><source src="audio/drums.mp3" type="audio/mp3"></audio>
+    </div>
+
+    <div>
+      <input type="checkbox" id="cb_guitar"> Gitarre: <audio id="guitar" controls><source src="audio/guitar.mp3" type="audio/mp3"></audio>
+    </div>
+
+    <div>
+      <input type="checkbox" id="cb_organ"> Orgel: <audio id="organ" controls><source src="audio/organ.mp3" type="audio/mp3"></audio>
+    </div>
+
+</body>
+</html>

@@ -9,8 +9,8 @@
     let subFunction;
     let subFunction2;
 
-    function mainFunction(){
-      let foo = 0;
+    function mainFunction(newFoo){
+      let foo = newFoo;
 
       subFunction = function(){
         foo ++;
@@ -21,9 +21,10 @@
         foo ++;
         console.log('Gemeinsame "foo" in subFunction2: ' + foo);
       }
+
     }
 
-    mainFunction();
+    mainFunction(500);
 
     subFunction();
     subFunction();
@@ -36,6 +37,58 @@
     subFunction2();
     subFunction2();
     subFunction2();
+
+    console.log(' ');
+
+    // bei jedem Aufruf werden unterschiedlichen Objekten (Parameter 'obj') eigene Instanzen
+    // der untergeordneten Funktionen als Eigenschaften zugewiesen
+
+    function addFunctionToObject(newFoo, obj){
+      let foo = newFoo;
+
+      obj.subFunction = function(){
+        foo ++;
+        console.log('Gemeinsame "foo" in ' + this.meinname + '.subFunction: ' + foo);
+      }
+
+      obj.subFunction2 = function(){
+        foo ++;
+        console.log('Gemeinsame "foo" in ' + this.meinname + '.subFunction2: ' + foo);
+      }
+
+      return obj;
+    }
+
+
+
+    let obj1 = addFunctionToObject(500, {meinname: 'obj1'});
+    let obj2 = addFunctionToObject(1000, {meinname: 'obj2'});
+
+
+    obj1.subFunction();
+    obj1.subFunction();
+    obj1.subFunction();
+    obj1.subFunction();
+
+    console.log(' ');
+
+    obj1.subFunction2();
+    obj1.subFunction2();
+    obj1.subFunction2();
+    obj1.subFunction2();
+
+    console.log(' ');
+    obj2.subFunction();
+    obj2.subFunction();
+    obj2.subFunction();
+    obj2.subFunction();
+
+    console.log(' ');
+
+    obj2.subFunction2();
+    obj2.subFunction2();
+    obj2.subFunction2();
+    obj2.subFunction2();
 
     console.log(' ');
 
