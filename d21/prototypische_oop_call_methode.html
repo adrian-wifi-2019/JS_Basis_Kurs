@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prototypische OOP - Anwendung der call()-Methode (Function.prototype.call)</title>
+  <script>
+
+    let person = {
+      vorname: 'Franz',
+      nachname: 'Muster',
+      zeigeName: function(){
+        console.log( this.vorname + ' ' + this.nachname );
+      }
+    }
+
+    let person1 = {
+      vorname: 'Susi',
+      nachname: 'Sowieso'
+    }
+
+    let person2 = {
+      vorname: 'Rudi',
+      nachname: 'Ratlos'
+    }
+
+    // Nurtzung einer Methode im Kontext verschiedener Objekte,
+    // die in KEINER gemeinsamen Prototypenkette stehen
+    // D.h.: jedes 'this' der Methode verweist nun auf das festgelegte Kontext-Objekt
+    person.zeigeName();
+    person.zeigeName.call( person1 );
+    person.zeigeName.call( person2 );
+
+
+
+  </script>
+</head>
+<body>
+
+</body>
+</html>

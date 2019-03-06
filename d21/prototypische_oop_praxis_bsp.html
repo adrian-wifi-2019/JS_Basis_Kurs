@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OOP - Usergruppen</title>
+
+  <script>
+
+    window.onload = function(){
+
+      // Eigenschaften und Methoden aller User
+      let user = {
+        name: '',
+        alter: -1,
+        zeigeInhalt: function(ausgabe){
+          document.body.innerText = ausgabe;
+        }
+      }
+
+      let gastChild = Object.create(user);
+      gastChild.name = "Unbekannt";
+      gastChild.alter = 5;
+      gastChild.zeigeInhalt = function(){
+        this.__proto__.zeigeInhalt("Kinderfreier Inhalt");
+      }
+
+      let adult = Object.create(user);
+
+      adult.zeigeInhalt = function(ausgabe){
+        console.log('alter: ' + this.alter);
+        let ausgabeFinal = (this.alter >= 18) ? ausgabe : "Leider nicht alt genug!";
+        this.__proto__.__proto__.zeigeInhalt(ausgabeFinal);
+      }
+
+      let gastAdult = Object.create(adult);
+      gastAdult.name = "Unbekannt";
+      gastAdult.alter = 17;
+      gastAdult.zeigeInhalt = function(){
+        this.__proto__.zeigeInhalt.call(this, "Hallo lieber Gast");
+      }
+
+      let registrierterUserAdult = Object.create(adult);
+      registrierterUserAdult.zeigeInhalt = function(){
+        this.__proto__.zeigeInhalt.call(this, "Hallo " + this.name);
+      }
+      registrierterUserAdult.name = 'Max Muster';
+      registrierterUserAdult.alter = 35;
+
+      // registrierterUserAdult.zeigeInhalt();
+      gastAdult.alter = 22;
+      gastAdult.zeigeInhalt();
+    }
+  </script>
+</head>
+<body>
+
+</body>
+</html>

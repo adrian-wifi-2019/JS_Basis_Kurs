@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prototypische OOP - Vererbungen</title>
+  <script>
+
+    // Primitive Datentypen werden bei Anwendung von Methoden/Eigenschaften in temporäre (!) String-,
+    // Number- oder Boolean-Objekte konvertiert
+    // console.log('Index von b: ' + 'abc'.indexOf('b') );
+
+    let simplesObj = {
+      foo: 1
+    }
+
+    // der Prototype ist 'Object' samt der zugehörigen String Methode
+    // das Objekt lässt sich als 'Object' behandeln
+    // console.log( simplesObj.toString() );
+
+    // über die '__proto__'-Eigenschaft lässt sich auf den Prototype einer Objektinstanz
+    // zugreifen
+    // console.log( simplesObj.__proto__ );
+
+    // die statische Methode Object.getPrototypeOf( objekt ) tut genau dasselbe:
+    // console.log( Object.getPrototypeOf(simplesObj) );
+
+    let basisObj = {
+      foo1: 24,
+      foo2: true,
+      foo3: null
+    }
+
+    let erbendesObj = Object.create(basisObj);
+    erbendesObj.xy = 'testWert';
+
+    let erbendesObj2 = Object.create(basisObj);
+    erbendesObj2.abc = false;
+
+    console.log( 'erbendesObj:' );
+    console.log( erbendesObj );
+    basisObj.foo1 = 33;
+    console.log( 'erbendesObj.foo1: ' + erbendesObj.foo1 );
+
+    console.log( 'erbendesObj2:' );
+    console.log( erbendesObj2 );
+    console.log( 'erbendesObj2.foo1: ' + erbendesObj2.foo1 );
+
+  </script>
+</head>
+<body>
+
+</body>
+</html>

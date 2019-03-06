@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prototypische OOP - Überschreiben von Eigenschaften und Methoden</title>
+  <script>
+    let basisObj = {
+      foo: 1,
+      zeigeFoo: function( strObjName ){
+        console.log( 'basisObj/zeigeFoo im Kontext von ' + strObjName +  ': ' + this.foo );
+      }
+    }
+
+    let erbendesObj = Object.create( basisObj );
+    console.log( erbendesObj );
+
+    // die eigenschaft des Prototype wird 'überschrieben'
+    // erbendesObj besitzt nun eine eigene Eigenschaft 'foo' (!)
+    erbendesObj.foo = 5;
+    console.log( erbendesObj );
+
+    console.log( 'erbendesObj.foo: ' + erbendesObj.foo );
+    console.log( 'erbendesObj.__proto__.foo: ' + erbendesObj.__proto__.foo );
+
+    erbendesObj.zeigeFoo = function(){
+      console.log( 'erbendesObj/zeigeFoo:' + this.foo );
+    }
+
+    erbendesObj.zeigeFoo();
+
+    // Aufruf von (überschriebenen) Methoden des Prototype
+    erbendesObj.__proto__.zeigeFoo('basisObj (via erbendesObj.__proto__)');
+
+    // Aufruf von (überschriebenen) Methoden des Prototype im eigenen Kontext über die call-Methode
+    erbendesObj.__proto__.zeigeFoo.call( erbendesObj, 'erbendesObj (via call()-Aufruf)' );
+
+  </script>
+</head>
+<body>
+
+</body>
+</html>
