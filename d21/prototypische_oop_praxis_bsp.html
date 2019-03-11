@@ -28,7 +28,7 @@
       let adult = Object.create(user);
 
       adult.zeigeInhalt = function(ausgabe){
-        console.log('alter: ' + this.alter);
+        //console.log('alter: ' + this.alter);
         let ausgabeFinal = (this.alter >= 18) ? ausgabe : "Leider nicht alt genug!";
         this.__proto__.__proto__.zeigeInhalt(ausgabeFinal);
       }

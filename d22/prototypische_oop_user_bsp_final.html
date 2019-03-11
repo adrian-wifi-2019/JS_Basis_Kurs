@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OOP Usergruppen</title>
+  <script>
+
+    window.onload = function() {
+
+      /////////////////////////////////////
+      //  Basis User
+      /////////////////////////////////////
+
+      let basisUser = {
+        // Öffentliche Eigenschaften
+        header: 'Herzlich Willkommen!',
+        childZusatzContent: null,
+        adultZusatzContent: null,
+
+        // 'Private' Eigenschaften
+        _alter: -1,
+        _childBasisContent: 'Ninja Turtle Masscacre 3 - out now!',
+        _adultBasisContent: 'Das Neueste aus der Welt der Kuscheltiere!',
+
+        // Setter/Getter Methoden (Accessors)
+        get alter(){
+          return this._alter;
+        },
+
+        set alter(jahre){
+          if( isNaN(jahre) )
+            throw /*new*/ Error('basisUser/set alter: der übergebene Wert "' + jahre + '" ist kein Zahlenwert.');
+
+          this._alter = jahre * 1;
+        },
+
+        get basisContent(){
+          return this.isAdult ? this._adultBasisContent : this._childBasisContent;
+        },
+
+        set basisContent(html){
+          throw Error('basisUser/set basisContent: Ungültiger Versuch die Eigenschaft zu überschreiben (read-only)')
+        },
+
+        get zusatzContent(){
+          return this.isAdult ? this.adultZusatzContent : this.childZusatzContent;
+        },
+
+        set zusatzContent(html){
+          throw Error('basisUser/set zusatzContent: Ungültiger Versuch die Eigenschaft zu überschreiben (read-only)')
+        },
+
+        get isAdult(){
+          return (this.alter >= 18);
+        },
+
+        set isAdult( isAdultBoolean ){
+          throw Error('basisUser/set isAdult: Ungültiger Versuch die Eigenschaft zu überschreiben (read-only)')
+        },
+
+        // Methoden
+        zeigeContent: function(){
+          const domElement = document.getElementById('main');
+
+          domElement.classList.add( this.isAdult ? 'adultColor' : 'childColor');
+          domElement.classList.remove( this.isAdult ? 'childColor' : 'adultColor');
+
+          let content = '<h1>' + this.header + '</h1>' + this.basisContent;
+          content += this.zusatzContent ? this.zusatzContent : '';
+          domElement.innerHTML = content;
+        }
+      }
+
+      /////////////////////////////////////
+      //  Registrierter User
+      /////////////////////////////////////
+
+      let registeredUser = Object.create(basisUser);
+      // registeredUser._name = '';
+      registeredUser.childZusatzContent = '<p>Viel Spaß in unserer neuen Ninja Erlebniswelt!<br><a href="#">Zum Turtle Ego Shooter</a></p>';
+      registeredUser.adultZusatzContent = '<p>Finden Sie ihr Kuscheltier für\'s Leben!<br><a href="#">Zum Kuscheltier Katalog</a></p>';
+
+      Object.defineProperty(registeredUser, 'name',  {
+        enumberable: true,
+        configureable: false,
+        get: function(){
+          return this._name;
+        },
+        set: function(strName){
+
+          if(this._name != null)
+            throw Error(
+              'registeredUser/set name: dieser Wert darf nur einmal gesetzt werden, aktueller Wert: ' +
+              this._name + ', neuer Wert: ' + strName
+            );
+
+          // Object.defineProperty mit einem Data Descriptor Object
+          // die Eigenschaft '_name' wird einmalig gesetzt und mit 'writeable: false' gesperrt
+          Object.defineProperty(this, '_name', {
+            enumberable: false,
+            configureable: false,
+            writeable: false,
+            value: strName
+          });
+
+          this.header = 'Hallo ' + this.name + '!';
+        }
+      });
+
+      /////////////////////////////////////
+      //  Premium User
+      /////////////////////////////////////
+
+      let premiumUser = Object.create(registeredUser);
+      premiumUser.childZusatzContent += '<p><strong>Jetzt: Die supercoolen Ninja Turtle Figuren zum halben Preis! Nur für Premium Mitglieder!</strtong></p>';
+      premiumUser.adultZusatzContent += '<p><strong>Jetzt: Gratis Eintritt im Kuscheltierzoo für Premium Mitglieder!</strtong></p>';
+
+
+      /////////////////////////////////////
+      //  User Verwaltung
+      /////////////////////////////////////
+
+      function neuerUser(userTyp, name, alter){
+        let proto, user;
+
+        switch(userTyp){
+          case 'gast':
+            return basisUser;
+            // break;
+          case 'registered':
+            proto = registeredUser;
+            break;
+          case 'premium':
+            proto = premiumUser;
+            break;
+          default:
+            throw Error('neuerUser: unbekannter userTyp: ' + userTyp);
+        }
+
+        user = Object.create(proto);
+
+        if(name)   user.name = name;
+        if(alter)  user.alter = alter;
+
+        return user;
+      }
+
+      const users = [
+        neuerUser('gast'),
+        neuerUser('registered', 'Max Mustermann', 37),
+        neuerUser('registered', 'Maxi Musterknabe', 12),
+        neuerUser('premium', 'Anna Anyway', 24),
+        neuerUser('premium', 'Susi Sowieso', 4)
+      ];
+
+      console.log(users[2]);
+      users[2].zeigeContent();
+
+    } // Ende window.onload
+
+  </script>
+  <style media="screen">
+    * {
+      font-family: sans-serif;
+      font-size: 1.25rem;
+    }
+    div{
+      margin: .5em;
+      padding: .5em;
+      border: 1px solid;
+    }
+    /* .main{
+      background-color: lightyellow;
+    } */
+    .childColor{
+      background-color: darkSeaGreen;
+    }
+    .adultColor{
+      background-color: lightBlue;
+    }
+    .adminNavi {
+      display: none;
+      background-color: lavender;
+    }
+    .adminDetails{
+      display: none;
+      background-color: lightgrey;
+    }
+  </style>
+</head>
+<body>
+    <div id="main" class="main"></div>
+    <div id="adminNavi" class="adminNavi"></div>
+    <div id="adminDetails" class="adminDetails">
+
+    </div>
+</body>
+</html>
