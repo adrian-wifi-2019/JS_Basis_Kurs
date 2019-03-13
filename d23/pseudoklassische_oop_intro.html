@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pseudoklassische OOP</title>
+  <script>
+
+      let Person = function (name, alter){
+        // this.name = name;
+        Object.defineProperty(this, 'name', {
+          writeable: false,
+          value: name
+        });
+
+        this.zeigeName = function(){
+          console.log(this.name);
+        }
+      }
+
+      Person.prototype.alter = -1;
+      Person.prototype.verrateAlter = function(){
+        console.log('Mein Alter ist ' + this.alter);
+      }
+
+
+      let max = new Person('Max Muster', 38);
+      console.log(max);
+
+      console.log(max.__proto__);
+
+      console.log(max.__proto__ === Person.prototype); // true
+      console.log(max.constructor === Person); // true
+      console.log(max instanceof Person); // true
+
+      // function vieleWerte(...zahlen){
+      //   zahlen.forEach(function(zahl){
+      //     console.log(zahl);
+      //   });
+      // }
+      //
+      // vieleWerte(22, 35, 627, 999, 'bla', new Object());
+
+
+  </script>
+</head>
+<body>
+
+</body>
+</html>

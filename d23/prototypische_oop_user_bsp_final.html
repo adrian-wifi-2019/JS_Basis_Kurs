@@ -60,8 +60,8 @@
         },
 
         // Methoden
-        zeigeContent: function(){
-          const domElement = document.getElementById('main');
+        zeigeContent: function(domE){
+          const domElement = domE || document.getElementById('main');
 
           domElement.classList.add( this.isAdult ? 'adultColor' : 'childColor');
           domElement.classList.remove( this.isAdult ? 'childColor' : 'adultColor');
@@ -120,6 +120,51 @@
       //  Admin User
       /////////////////////////////////////
 
+      let adminUser = Object.create(premiumUser);
+
+      adminUser.zeigeContent = function(){
+        const navi = document.getElementById('adminNavi');
+        navi.innerHTML = '';
+        navi.appendChild( this.getNavi() );
+        navi.style.display = 'block';
+
+        document.getElementById('main').innerText = 'Hallo ' +
+        this.name +
+        '! Wählen sie zur Vorschau einen USer aus dem Menü.';
+      }
+
+      adminUser.getNavi = function () {
+        let link;
+        const fragment = document.createDocumentFragment();
+
+        for(let i = 0; i < users.length; i++ ){
+        // for(var i = 0; i < users.length; i++ ){
+          // (function(i){
+            if(users[i].__proto__ === adminUser)
+              continue;
+
+            link = document.createElement('a');
+            link.href = '#';
+            link.innerText = users[i].name;
+            link.onclick = function(e){
+              e.preventDefault();
+              const domDetails = document.getElementById('adminDetails');
+              users[i].zeigeContent(domDetails);
+              domDetails.style.display = 'block';
+
+              Array.from( this.parentElement.children ).forEach(function( link ){
+                link.classList.remove('aktiv');
+              });
+
+              this.classList.add('aktiv');
+            }
+            fragment.appendChild(link);
+          // })(i);
+        }
+
+        return fragment;
+      }
+
 
       /////////////////////////////////////
       //  User Verwaltung
@@ -138,6 +183,9 @@
           case 'premium':
             proto = premiumUser;
             break;
+          case 'admin':
+            proto = adminUser;
+            break;
           default:
             throw Error('neuerUser: unbekannter userTyp: ' + userTyp);
         }
@@ -155,11 +203,13 @@
         neuerUser('registered', 'Max Mustermann', 37),
         neuerUser('registered', 'Maxi Musterknabe', 12),
         neuerUser('premium', 'Anna Anyway', 24),
-        neuerUser('premium', 'Susi Sowieso', 4)
+        neuerUser('premium', 'Susi Sowieso', 4),
+        neuerUser('admin', 'Carina Careless', 28)
       ];
 
-      console.log(users[2]);
-      users[2].zeigeContent();
+
+      console.log(users[5]);
+      users[5].zeigeContent();
 
     } // Ende window.onload
 
@@ -189,7 +239,20 @@
     }
     .adminDetails{
       display: none;
-      background-color: lightgrey;
+      /* background-color: lightgrey; */
+    }
+    .adminNavi a {
+      padding: .5em;
+      color: black;
+      text-decoration: none;
+    }
+    .adminNavi a:hover {
+      color: darkred;
+    }
+
+    .adminNavi a.aktiv {
+      text-decoration: underline;
+      color: darkred;
     }
   </style>
 </head>

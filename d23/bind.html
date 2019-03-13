@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+<script>
+
+  function zeigeName(){
+    console.log(this.name);
+  }
+
+  let max = {
+    name: 'Max'
+  }
+
+  let susi = {
+    name: 'Susi'
+  }
+
+  var zeigeNameMax = zeigeName.bind(max);
+  var zeigeNameSusi = zeigeName.bind(susi);
+
+  zeigeNameMax();
+  zeigeNameSusi();
+
+</script>
+
+</head>
+<body>
+
+</body>
+</html>

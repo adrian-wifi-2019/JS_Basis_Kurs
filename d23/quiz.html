@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OOP Quiz</title>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script>
+
+    $(function(){
+      function Quiz(){
+        this.frageNummer = 0;
+        this.fragen = [];
+
+        this.addFragen = function(...fragen){
+          // fragen.forEach( function(frageObj){
+          //   this.fragen.push(frageObj);
+          // }.bind(this) );
+
+          this.fragen = this.fragen.concat(fragen);
+        }
+      }
+
+      function Frage(frage, antworten, indexAntwort){
+        this.frage = frage;
+        this.antworten = antworten;
+        this.indexAntwort = indexAntwort;
+      }
+
+      const quiz = new Quiz();
+      quiz.addFragen(
+        new Frage('Wer bin ich?', ['Fu Manchu', 'ich bin ich', 'Albert Einstein', 'Cleoparta'], 1) ,
+        new Frage('Woher komme ich?', ['Aus dem Wald', 'Vom Baum', 'Aus der Höhle', 'Von zu Hause'], 3)
+      );
+
+    }); // Ende ready
+
+  </script>
+
+  <style media="screen">
+    * {
+      font-size: 1.25rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    body,
+    input,
+    button {
+      font: 24px Arial;
+      color: #fff;
+    }
+
+    #quiz_ui {
+      background: rgba(0, 0, 0, 0.6);
+      width: 70%;
+    }
+
+    section>div {
+      vertical-align: middle;
+      text-align: center;
+    }
+
+    input {
+      color: #000;
+    }
+
+    button {
+      margin: 10px;
+      border-radius: 7px;
+      border: 1px solid #fff;
+      background: transparent;
+      color: #fff;
+      cursor: pointer;
+      padding: 5px 20px;
+
+      width: 40%;
+    }
+
+    button:hover,
+    button.clicked {
+      background: rgba(255, 255, 255, 0.35);
+    }
+
+    button.answerTrue {
+      background: rgba(0, 255, 0, 0.35);
+    }
+
+    button.answerFalse {
+      background: rgba(255, 0, 0, 0.35);
+    }
+
+    #q {
+      margin: 0 auto;
+    }
+
+  </style>
+</head>
+
+<body>
+  <section id="quiz_ui">
+    <div>
+      <h1 id="q"></h1>
+      <button></button>
+      <button></button><br>
+      <button></button>
+      <button></button><br>
+    </div>
+  </section>
+</body>
+
+</html>
