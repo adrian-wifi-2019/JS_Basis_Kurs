@@ -1,0 +1,64 @@
+﻿URL: http://wifiwien.000webhostapp.com/quiz/quiz2.php
+
+// ----------------------
+	NEUE FRAGE
+-----------------------//
+REQUEST POST
+{
+	type:'frageneu',
+	level: INT(1-5)
+}
+
+RESONSE JSON/STRING
+{
+	frageID: INT,
+	frage: STRING,
+	antworten: [
+		STRING,
+		STRING,
+		STRING,
+		STRING
+	]
+}
+
+// ----------------------
+	ANTWORT ÜBERPRÜFEN
+-----------------------//
+REQUEST POST
+{
+	type:'check',
+	level: INT(1-5),
+	frageID: INT
+	antwort: INT(1-4)
+}
+RESONSE JSON/STRING
+{
+	checkOK: BOOLEAN,
+	correctAntwort: INT (1-4)
+}
+
+// ----------------------
+	SPEICHERE HIGHSCORE
+-----------------------//
+REQUEST POST
+{
+	type:'writehighscore',
+	name: STRING,
+	ms: INT
+}
+RESONSE JSON/STRING
+{
+	html: STRING (HTML mit Liste)
+}
+
+// ----------------------
+	ZEIGE HIGHSCORE
+-----------------------//
+REQUEST POST
+{
+	type:'showhighscore',
+}
+RESONSE JSON/STRING
+{
+	html: STRING (HTML mit Liste)
+}

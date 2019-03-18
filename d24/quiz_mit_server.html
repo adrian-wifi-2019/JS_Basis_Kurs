@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OOP Quiz</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+  <script>
+    // Default-Werte für alle $.ajax() calls
+    // (alle gehen via POST an dieselbe URL)
+    $.ajaxSetup({
+      url: 'http://wifiwien.000webhostapp.com/quiz/quiz2.php',
+      type: 'POST',
+      dataType: 'json'
+    });
+
+
+    $(function(){
+
+      function Quiz(){
+        this.level = 1;
+        this.frage;
+        this.punkte = 0;
+        this.zeitProFrage = 5000; // in ms
+        this.zeitVerbleibend = 0;
+        this.intervalId = 0; // benötigt für clearInterval() / progress bar
+
+        this.ladeFrage = function(){
+          $.ajax({
+            data: {
+            	type:'frageneu',
+            	level: this.level
+            },
+            success: function(d){
+              console.log(d);
+              this.zeigeFrage( new Frage(d.frage, d.antworten, d.frageID) );
+            }.bind(this)
+          });
+        }
+
+        this.zeigeFrage = function(frageObj){
+          this.frage = frageObj;
+
+          $('#q').text(frageObj.frage);
+
+          $('#quiz_ui button')
+            .removeClass('answerTrue answerFalse')
+            .each( function(i){
+              $(this)
+                .text(frageObj.antworten[i])
+                .attr('data-index', i);
+            })
+            .on('click', this, function(e){
+              //console.log( $(this).attr('data-index') );
+              $('#quiz_ui button').off('click');
+
+              let quizObj = e.data;
+              clearInterval(quizObj.intervalId);
+              quizObj.pruefeAntwort( $(this).attr('data-index') );
+            })
+
+            this.zeitVerbleibend = this.zeitProFrage;
+            this.intervalId = setInterval( this.zeigeFortschritt.bind(this), 40 );
+        }
+
+        this.zeigeFortschritt = function () {
+          this.zeitVerbleibend -= 40;
+
+          if(this.zeitVerbleibend <= 0){
+            clearInterval( this.intervalId )
+            this.spielEnde();
+          } else {
+            $( '#quiz_ui progress' ).val( 100 * this.zeitVerbleibend / this.zeitProFrage );
+          }
+        }
+
+        this.pruefeAntwort = function(index){
+          return;
+
+          const richtig = (this.fragen[this.frageNummer].indexAntwort == index);
+          // console.log('antwort ist richtig: ' + richtig);
+          // console.log($( 'button[data-index="' + index + '"]'));
+          $( 'button[data-index="' + index + '"]').addClass(richtig ? 'answerTrue' : 'answerFalse')
+
+          if(richtig) this.punkte ++;
+
+          this.frageNummer ++;
+
+          if(richtig)
+            toastr.success('Bravo!', 'Richtige Antwort');
+          else
+            toastr.warning('Leider nein :(', 'Falsche Antwort')
+
+          if(this.frageNummer < this.fragen.length)
+            setTimeout( this.zeigeFrage.bind(this), 2000);
+          else
+            setTimeout( this.spielEnde.bind(this), 2000);
+        }
+
+        this.spielEnde = function(){
+          $('#quiz_ui, #end_screen').toggle();
+          $('#end_screen > div').text('Game over. Punkte: ' + this.punkte)
+        }
+
+      }
+
+      function Frage(frage, antworten, frageID){
+        this.frage = frage;
+        this.antworten = antworten;
+        this.frageID = frageID;
+      }
+
+      const quiz = new Quiz();
+
+
+      quiz.ladeFrage();
+
+
+      // toastr Optionen
+      toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+      }
+
+    }); // Ende ready
+
+  </script>
+
+  <style media="screen">
+    * {
+      font-size: 1.25rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    body,
+    input,
+    button {
+      font: 24px Arial;
+      color: #fff;
+    }
+
+    #end_screen,
+    #quiz_ui {
+      background: rgba(0, 0, 0, 0.6);
+      width: 70%;
+    }
+
+    #end_screen {
+      display: none;
+    }
+
+    section > div {
+      text-align: center;
+      padding: 1em;
+    }
+
+    input {
+      color: #000;
+    }
+
+    button {
+      margin: 10px;
+      border-radius: 7px;
+      border: 1px solid #fff;
+      background: transparent;
+      color: #fff;
+      cursor: pointer;
+      padding: 5px 20px;
+
+      width: 40%;
+    }
+
+    /* button:hover, */
+    button.clicked {
+      background: rgba(255, 255, 255, 0.35);
+    }
+
+    button.answerTrue {
+      background: rgba(0, 255, 0, 0.35);
+    }
+
+    button.answerFalse {
+      background: rgba(255, 0, 0, 0.35);
+    }
+
+    #q {
+      margin: 0 auto;
+    }
+
+  </style>
+</head>
+
+<body>
+  <section id="quiz_ui">
+    <div>
+      <h1 id="q"></h1>
+      <button></button>
+      <button></button><br>
+      <button></button>
+      <button></button><br>
+      <progress value="100" max="100"></progress>
+    </div>
+  </section>
+
+  <section id="end_screen">
+    <div></div>
+  </section>
+</body>
+
+</html>

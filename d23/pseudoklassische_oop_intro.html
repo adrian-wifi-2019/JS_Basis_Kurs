@@ -6,7 +6,8 @@
   <title>Pseudoklassische OOP</title>
   <script>
 
-      let Person = function (name, alter){
+      // let Person = function (name, alter){
+      function Person(name, alter){
         // this.name = name;
         Object.defineProperty(this, 'name', {
           writeable: false,
@@ -31,7 +32,7 @@
 
       console.log(max.__proto__ === Person.prototype); // true
       console.log(max.constructor === Person); // true
-      console.log(max instanceof Person); // true
+      console.log(max instanceof Person); // tr
 
       // function vieleWerte(...zahlen){
       //   zahlen.forEach(function(zahl){
