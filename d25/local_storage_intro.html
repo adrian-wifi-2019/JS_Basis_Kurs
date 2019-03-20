@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Storage</title>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script>
+    $(function(){
+
+      function zeigeStorage(){
+        let alteDaten = localStorage.getItem('username');
+
+        if(alteDaten){
+          alteDaten = JSON.parse(alteDaten);
+          $('#ausgabe').html( 'Hallo ' + alteDaten.name + '! Anzahl Aufrufe: ' + alteDaten.counter);
+          alteDaten.counter++;
+          localStorage.setItem('username', JSON.stringify(alteDaten));
+        } else {
+          $('#ausgabe').empty();
+        }
+      }
+
+      zeigeStorage();
+
+      $('#btn_save').on('click', function(){
+        let eingabe = $('#eingabe').val();
+
+        if(eingabe !== ''){
+          let daten = {
+            name: eingabe,
+            counter: 1
+          }
+
+          localStorage.setItem('username', JSON.stringify(daten));
+          zeigeStorage();
+        } else {
+          alert('Gib was ein!');
+        }
+      });
+
+      $('#btn_delete').on('click', function(){
+        localStorage.removeItem('username');
+        localStorage.clear(); // löscht das gesamte localStorage für die jeweilige Domain / Protokoll
+        zeigeStorage();
+      });
+
+    });
+  </script>
+  <style media="screen">
+    div {
+      border: 1px solid;
+      width: 300px;
+      height: 200px;
+      margin: 20px;
+    }
+  </style>
+</head>
+<body>
+  <label for="eingabe">Name:</label> <input type="text" id="eingabe" placeholder="Geben Sie einen Namen">
+  <button type="button" id="btn_save">Speichern</button>
+  <button type="button" id="btn_delete">Löschen</button>
+  <div id="ausgabe"></div>
+</body>
+</html>

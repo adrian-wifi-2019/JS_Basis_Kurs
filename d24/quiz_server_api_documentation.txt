@@ -31,7 +31,8 @@ REQUEST POST
 	frageID: INT
 	antwort: INT(1-4)
 }
-RESONSE JSON/STRING
+
+RESPONSE JSON/STRING
 {
 	checkOK: BOOLEAN,
 	correctAntwort: INT (1-4)

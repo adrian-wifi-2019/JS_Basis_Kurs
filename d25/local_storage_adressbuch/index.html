@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personen Liste</title>
+  <link rel="stylesheet" href="jquery-ui.min.css">
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="jquery-ui.min.js"></script>
+  <script>
+    $(function(){
+      $('#main').tabs({
+        activate: function(ev, ui){
+          console.log( ui.newTab.find('a').attr('href') );
+        }
+      });
+    });
+  </script>
+  <style media="screen">
+    input {
+      margin:.5em;
+      padding:.2em;
+    }
+  </style>
+</head>
+<body>
+  <div id="main">
+    <ul>
+      <li> <a href="#eingabe">Daten eingeben</a> </li>
+      <li> <a href="#ausgabe">Daten ausgeben</a> </li>
+    </ul>
+
+    <div id="eingabe">
+      <form name="formNeu" action="?">
+        Vorname: <input type="text" name="vorname" placeholder="Vorname"><br>
+        Nachname: <input type="text" name="nachname" placeholder="Nachname"><br>
+        E-Mail: <input type="text" name="mail" placeholder="E-Mail"><br>
+        Geburtstag: <input type="text" name="geburtsdatum" placeholder="TT.MM.JJJJ"><br>
+        <button type="button">Neuen User anlegen</button>
+      </form>
+    </div>
+
+    <div id="ausgabe">
+      Ausgabe
+    </div>
+
+  </div>
+</body>
+</html>
