@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personen Liste</title>
+  <link rel="stylesheet" href="jquery-ui.min.css">
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="jquery-ui.min.js"></script>
+  <script>
+    $(function(){
+      $('#main').tabs({
+        activate: function(ev, ui){
+          // console.log( ui.newTab.find('a').attr('href') );
+          let panelId = ui.newPanel.attr('id');
+
+          if(panelId === 'ausgabe'){
+            $('#tabelle').empty();
+
+            let personen = JSON.parse( localStorage.getItem('personen') );
+            let table, tr, td;
+
+            console.log(personen);
+
+            table = $('<table border="1">');
+            table.append( $('<tr><th>Vorname</th><th>Nachname</th><th>E-Mail</th><th>Geb.datum</th></tr>') );
+
+            $.each(personen, function(i, person){
+              tr = $('<tr>')
+                .appendTo(table)
+                .append( $('<td>').text(person.vorname) )
+                .append( $('<td>').text(person.nachname) )
+                .append( $('<td>').text(person.email) )
+                .append( $('<td>').text(person.geburtsdatum) )
+            });
+
+            $('#tabelle').append(table);
+
+          }
+        }
+      });
+
+      $('#eingabe form').on('submit', function(ev){
+        ev.preventDefault();
+
+        let val1 = validiereEingabe('vorname',     'stringAlpha',  'error');
+        let val2 = validiereEingabe('nachname',    'stringAlpha',  'error');
+        let val3 = validiereEingabe('mail',        'email',        'error');
+        let val4 = validiereEingabe('geburtsdatum','date',         'error');
+
+        if(val1 && val2 && val3 && val4){
+          let person = {
+            vorname: $('#vorname').val(),
+            nachname: $('#nachname').val(),
+            email: $('#mail').val(),
+            geburtsdatum: $('#geburtsdatum').val()
+          };
+
+          let personen = JSON.parse( localStorage.getItem('personen') );
+
+          if(!personen)
+            personen = [];
+
+          personen.push(person);
+          localStorage.setItem('personen', JSON.stringify(personen) );
+
+          console.log('Daten gepeichert');
+          $('#eingabe form').get(0).reset();
+
+        }
+      });
+
+      // validierung für <input>- und <select>-Elemente
+      function validiereEingabe(id, typ, classError){
+        console.log('validiereEingabe');
+        let isValid = false;
+        let feld = $('#' + id);
+        let wert = feld.val();
+
+        switch(typ){
+          case 'stringAlpha':
+            isValid = /^[a-zA-ZüÜäÄöÖß]{2,}$/.test(wert);  // min. 2 characters
+            break;
+          case 'email':
+            isValid = /^.+@.{2,}\..{2,4}$/.test(wert);
+            break;
+          case 'date':
+            let arr = wert.split('.');
+            if(arr.length != 3)
+              break;
+
+            var datum = new Date(arr[2], arr[1] - 1, arr[0]);
+            isValid = datum.getDate() == arr[0] &&
+                      datum.getMonth() == arr[1] - 1 &&
+                      datum.getFullYear() == arr[2];
+            break;
+
+          default:
+            throw Error('validiereEingabe: unbekannter typ: ' + typ);
+        }
+
+        if(classError !== undefined){
+          isValid ? feld.removeClass(classError) : feld.addClass(classError);
+        }
+
+        return isValid;
+      }
+  });
+  </script>
+  <style media="screen">
+    input {
+      margin:.5em;
+      padding:.2em;
+    }
+    .error{
+      background: red;
+    }
+    td {
+      padding: .5em;
+    }
+    #eingabe label{
+      width: 80px;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <div id="main">
+    <ul>
+      <li> <a href="#eingabe">Daten eingeben</a> </li>
+      <li> <a href="#ausgabe">Daten ausgeben</a> </li>
+    </ul>
+
+    <div id="eingabe">
+      <form name="formNeu" action="?">
+        <label for="vorname">Vorname:</label> <input type="text" name="vorname" id="vorname" placeholder="Vorname"><br>
+        <label for="nachname">Nachname:</label> <input type="text" name="nachname" id="nachname" placeholder="Nachname"><br>
+        <label for="mail">E-Mail:</label> <input type="text" name="mail" id="mail" placeholder="E-Mail"><br>
+        <label for="geburtsdatum">Geburtstag:</label> <input type="text" name="geburtsdatum" id="geburtsdatum" placeholder="TT.MM.JJJJ"><br>
+        <input type="submit" name="absenden" value="Neuen User anlegen">
+        <!-- <button type="button">Neuen User anlegen</button> -->
+      </form>
+    </div>
+
+    <div id="ausgabe">
+      <div id="tabelle"></div>
+    </div>
+
+  </div>
+</body>
+</html>
