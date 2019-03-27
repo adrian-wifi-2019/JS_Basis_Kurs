@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Erkunden Sie Ihre Kursumgebung</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 425px;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #floating-panel {
+        position: absolute;
+        top: 10px;
+        left: 25%;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+      }
+      #floating-panel {
+        margin-left: -100px;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div id="floating-panel">
+      <input type="button" value="Toggle Street View" id="btn_toggle"></input>
+    </div>
+
+    <div id="map"></div>
+
+    <script>
+
+      const LAT_LNG_WIFI =  { lat: 48.227505461651596, lng: 16.349155259521467 };
+      const LAT_LNG_VE   =  { lat: 48.226479908071774, lng: 16.349118694797653 };
+      const LAT_LNG_HE   =  { lat: 48.22840028862224, lng: 16.348952855285688 };
+      const LAT_LNG_C513 =  { lat: 48.228321687903396, lng: 16.349295710992124 };
+
+      function initMap(){
+        console.log('Google Map API geladen');
+
+        const map = new google.maps.Map(
+          document.getElementById('map'),
+          {
+            center: LAT_LNG_WIFI,
+            zoom: 17
+          }
+        );
+
+        const vordereingang = new google.maps.Marker(
+          {
+            position: LAT_LNG_VE,
+            map: map,
+            title: 'WIFI Vordereingang'
+          }
+        );
+
+        const hintereingang = new google.maps.Marker(
+          {
+            position: LAT_LNG_HE,
+            map: map,
+            title: 'WIFI Hintereingang'
+          }
+        );
+
+        const c513 = new google.maps.Marker(
+          {
+            position: LAT_LNG_C513,
+            map: map,
+            title: 'WIFI Kursraum C513',
+            icon: 'https://chart.googleapis.com/chart?chst=d_map_pin_icon&chld=star|ffffff'
+          }
+        );
+
+        vordereingang.meinPov = { heading: 270, pitch: 10 }
+        hintereingang.meinPov = { heading: 140, pitch: 0 }
+        c513.meinPov =          { heading: 180, pitch: 60 }
+
+        vordereingang.addListener('click', markerClicked);
+        hintereingang.addListener('click', markerClicked);
+        c513.addListener('click', markerClicked);
+
+        function markerClicked(){
+          panorama.setPosition( this.getPosition() );
+          panorama.setPov( this.meinPov );
+          panorama.setVisible(true);
+        }
+
+        const panorama = map.getStreetView();
+        panorama.setPosition( LAT_LNG_VE );
+        panorama.setPov(
+          {
+            heading: 270,
+            pitch: 10
+          }
+        );
+
+        document.getElementById('btn_toggle').onclick = function(){
+          panorama.setVisible( !panorama.getVisible() );
+        }
+        // panorama.setVisible(true);
+
+      } // Ende initMap
+
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?callback=initMap"></script>
+  </body>
+</html>
