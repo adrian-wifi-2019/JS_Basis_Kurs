@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0;" />
+  <link rel="stylesheet" media="screen" href="./Beispiel:SELFHTML-Beispiel-Grundlayout.css" />
+  <title>Video</title>
+
+  <script>
+    window.onload = function()
+    {
+      const vid = document.getElementById('player');
+
+      document.getElementById('play').addEventListener('click', function() { vid.play(); } );
+      document.getElementById('pause').addEventListener('click', function() { vid.pause(); } );
+
+      document.getElementById('duration').addEventListener('click', function() {
+        document.getElementById('ausgabe').innerHTML = 'Die Dauer des Videos beträgt: ' + vid.duration + ' Sekunden.'
+      });
+
+      const links = document.querySelectorAll('a.linkVideo');
+      // console.dir(links);
+      for(let i = 0; i < links.length; i++){
+        // console.dir(links[i]);
+        links[i].addEventListener('click', function(e){
+          e.preventDefault();
+          vid.src = 'vid/' + this.getAttribute('data-vid') + '.' + getVideoExtension();
+        });
+      }
+
+      function getVideoExtension() {
+        return (vid.canPlayType('video/mp4') !== '') ? 'mp4' : 'ogv';
+      }
+    }
+  </script>
+  <style>
+    body{
+      font-family: sans-serif;
+      padding: .5em;
+    }
+    button {
+      margin-top: 0.5em;
+      padding: .5em;
+    }
+    video {
+      margin: 0 auto;
+      width: 100%;
+      max-width: 1024px;
+    }
+    // .linkVideo{
+    //
+    // }
+  </style>
+</head>
+
+<body>
+  <h1>Video</h1>
+
+  <main>
+    <h2>Video in HTML5</h2>
+    <video id="player" src="vid/vid01.mp4" controls>
+      <!--
+        <source src="vid/vid01.mp4" type="video/mp4">
+        <source src="vid/vid01.ogv" type="video/ogv">
+      -->
+      Ihr Browser kann dieses Video nicht wiedergeben.
+    </video>
+    <div>
+      <button id="play">Play</button>
+      <button id="pause">Pause</button>
+      <button id="duration">Länge anzeigen</button>
+      <p id="ausgabe"></p>
+    </div>
+    <div>
+      <a href="#" data-vid="vid01" class="linkVideo">Video 1</a>
+      <a href="#" data-vid="vid02" class="linkVideo">Video 2</a>
+    </div>
+  </main>
+
+</body>
+</html>

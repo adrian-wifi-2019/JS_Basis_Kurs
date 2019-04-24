@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Drag & Drop API</title>
+  <script>
+    window.onload = function() {
+      document.getElementById('dragBild').ondragstart = dragHandler;
+      document.getElementById('drop_zone1').ondragover = allowDrop;
+      document.getElementById('drop_zone1').ondrop = dropHandler;
+
+      document.getElementById('drop_zone2').ondragover = allowDrop;
+      document.getElementById('drop_zone2').ondrop = dropHandler;
+    }
+
+    function dragHandler(e) {
+      // e.dataTransfer.clearData();
+      e.dataTransfer.setData("text", e.target.id);
+      // e.dataTransfer.setData("hasID", true);
+      console.log('start drag');
+    }
+
+    function allowDrop(e) {
+      e.preventDefault();
+      console.log('allow drop');
+    }
+
+    function dropHandler(e) {
+      e.preventDefault();
+      console.log(e.dataTransfer.types);
+
+      var data = e.dataTransfer.getData("text");
+      // console.log('text: ' + data);
+
+      // if(e.dataTransfer.getData("hasID"))
+        e.target.appendChild( document.getElementById(data) );
+
+      // console.log(this);
+      // console.log(e.target);
+    }
+  </script>
+  <style media="screen">
+    body {
+      font-family: sans-serif;
+    }
+
+    .drop_zone {
+      border: 1px solid;
+      min-width: 200px;
+      min-height: 100px;
+      margin-top: .5em;
+      padding: .5em;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Drag & Drop API</h1>
+
+  <div id="drop_zone2" class="drop_zone">
+    <img src="bild.jpg" alt="Bild" id="dragBild" draggable="true">
+  </div>
+
+  <div id="drop_zone1" class="drop_zone">
+    <!-- <p>Drag one or more files to this Drop Zone ...</p> -->
+    <div class="drop_zone"></div>
+    <div class="drop_zone"></div>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drag, Drop and Save</title>
+  <script src="FileSaver.js"></script>
+  <script>
+
+    window.onload = function() {
+      document.getElementById('drop_zone').ondragover = dragOverHandler;
+      document.getElementById('drop_zone').ondrop = dropHandler;
+    }
+
+    function dragOverHandler(ev) {
+      console.log('File(s) in drop zone');
+      // Prevent default behavior (Prevent file from being opened)
+      ev.preventDefault();
+    }
+
+    function dropHandler(ev) {
+      console.log('File(s) dropped');
+
+      // Prevent default behavior (Prevent file from being opened)
+      ev.preventDefault();
+
+      let file;
+
+      console.log(ev.dataTransfer);
+
+      if (ev.dataTransfer.items) {
+        // Use DataTransferItemList interface to access the file(s)
+        for (var i = 0; i < ev.dataTransfer.items.length; i++) {
+          // If dropped items aren't files, reject them
+          if (ev.dataTransfer.items[i].kind === 'file') {
+            file = ev.dataTransfer.items[i].getAsFile();
+            // console.log('... file[' + i + '].name = ' + file.name);
+          }
+        }
+      } else {
+        // Use DataTransfer interface to access the file(s)
+        for (var i = 0; i < ev.dataTransfer.files.length; i++) {
+          file = ev.dataTransfer.files[i];
+          // console.log('..... file[' + i + '].name = ' + file.name);
+        }
+      }
+
+      let filename = 'test';
+      let blob = new Blob( [file], {
+        type: "image/jpg"
+      });
+
+      saveAs(blob, filename + ".jpg");
+    }
+
+  </script>
+  <style media="screen">
+    body {
+      font-family: sans-serif;
+    }
+    #drop_zone {
+      border: 1px solid;
+      width:  200px;
+      height: 100px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Drag, Drop and Save</h1>
+  <div id="drop_zone">
+    <p>Drag one or more files to this Drop Zone</p>
+  </div>
+</body>
+
+</html>

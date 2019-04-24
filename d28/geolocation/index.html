@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Geolocation API</title>
+  <script>
+
+    if (navigator.geolocation) {
+
+      navigator.geolocation.getCurrentPosition(
+        function(position) {
+          let userPos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          alert("Ihr Standort: Lat=" + userPos.lat + ', LNG=' + userPos.lng);
+        },
+        function() {
+          alert("Keine Positionsinformationen verfügbar");
+        }
+      );
+
+    } else {
+
+      alert("Keine Geolocation API verfügbar");
+
+    }
+
+  </script>
+  <style media="screen">
+    body {
+      font-family: sans-serif;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Geolocation API Test</h1>
+
+</body>
+
+</html>
